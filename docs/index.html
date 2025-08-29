@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CTMC - 官方网站</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Google reCAPTCHA v2 - 复选框验证 -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+<body class="light-theme">
+    <!-- 人机验证页面 -->
+    <div id="verification-page" style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--light-bg);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        transition: opacity 0.5s ease;
+    ">
+        <div class="verification-content" style="text-align: center; max-width: 500px; padding: 2rem;">
+            <img src="images/CTMC.png" alt="CTMC Logo" style="max-width: 150px; margin-bottom: 2rem;">
+            <h1 style="margin-bottom: 1rem;">欢迎来到 CTMC</h1>
+            <p style="margin-bottom: 2rem; opacity: 0.8;">请完成人机验证以继续访问</p>
+            <!-- Google reCAPTCHA v2 复选框 - 更新为用户提供的最新密钥 -->
+            <div class="g-recaptcha" data-sitekey="6LcYJLMrAAAAAEtXhj5qjDzuSaae64LGFwTaMcDr" data-callback="onRecaptchaSuccess" data-expired-callback="onRecaptchaExpired"></div>
+            <div id="recaptcha-error" style="color: #e74c3c; margin-top: 1rem; display: none;"></div>
+            <div id="verification-loading" style="display: none; margin-top: 2rem;">
+                <div style="display: inline-block; width: 20px; height: 20px; border: 3px solid #f3f3f3; border-top: 3px solid #3498db; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                <p style="margin-top: 1rem;">验证中，请稍候...</p>
+            </div>
+            
+            <!-- 为了提高安全性，移除了测试按钮 -->
+            <style>
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+            </style>
+        </div>
+    </div>
+
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="images/CTMC.png" alt="CTMC Logo" class="logo-image">
+            </a>
+            
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link active" data-page="home">首页</a></li>
+                <li><a href="status.html" class="nav-link" data-page="status">服务器状态</a></li>
+                <li><a href="downloads.html" class="nav-link" data-page="downloads">整合包下载</a></li>
+                <li><a href="about.html" class="nav-link" data-page="about">关于我们</a></li>
+            </ul>
+            
+            <div class="theme-toggle">
+                <button id="theme-toggle-btn">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 玻璃主题兼容性提示 -->
+    <div id="glass-compatibility-warning" style="
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: rgba(244, 67, 54, 0.9);
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        font-size: 0.9rem;
+        display: none;
+        z-index: 1000;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    ">
+        <i class="fas fa-exclamation-triangle"></i> 可能出现兼容性问题
+    </div>
+
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <!-- 首页 -->
+        <section id="home" class="page active">
+            <div class="hero-section">
+                <div class="hero-content">
+                    <h1>欢迎来到 CTMC</h1>
+                    <p>体验惊险奇遇、激烈战斗与极致优化的游戏世界！</p>
+                    <a href="status.html" class="hero-btn">
+                        <i class="fas fa-server"></i> 查看服务器状态
+                    </a>
+                </div>
+            </div>
+
+            <div class="server-info">
+                <div class="info-card">
+                    <i class="fas fa-users"></i>
+                    <h3>活跃玩家</h3>
+                    <p id="active-players">0</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-globe"></i>
+                    <h3>服务器位置</h3>
+                    <p>中国 十堰/北京</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-clock"></i>
+                    <h3>在线时间</h3>
+                    <p id="uptime">99.9%</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-gamepad"></i>
+                    <h3>游戏版本</h3>
+                    <p id="game-version">1.20.1</p>
+                </div>
+            </div>
+
+            <div class="features-section">
+                <h2>服务器特色</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-compass"></i></div>
+                        <h3>惊险奇遇</h3>
+                        <p>探索广阔多样的世界，发现隐藏的宝藏和神秘遗迹，体验刺激的冒险任务</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-sword"></i> <i class="fas fa-shield-alt"></i></div>
+                        <h3>激烈战斗</h3>
+                        <p>挑战强大的Boss，参与PvP对战，体验紧张刺激的战斗系统</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                        <h3>极致优化</h3>
+                        <p>服务器经过深度优化，提供稳定流畅的游戏体验，支持多种设备</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-users"></i></div>
+                        <h3>友好社区</h3>
+                        <p>加入热情友好的玩家社区，一起创造属于你们的游戏故事</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="latest-updates">
+                <h2>最新公告</h2>
+                <div class="updates-container">
+                    <div class="update-card">
+                        <div class="update-header">
+                            <div class="update-date">2024-01-15</div>
+                            <div class="update-badge"><i class="fas fa-bullhorn"></i> 重要</div>
+                        </div>
+                        <h3>奇遇系统更新</h3>
+                        <p>我们新增了大量奇遇任务和隐藏地点，优化了战斗体验，并进行了服务器性能提升，让游戏更加流畅！</p>
+                    </div>
+                    <div class="update-card">
+                        <div class="update-header">
+                            <div class="update-date">2024-01-10</div>
+                            <div class="update-badge secondary"><i class="fas fa-star"></i> 新增</div>
+                        </div>
+                        <h3>全新BOSS挑战</h3>
+                        <p>全新的世界BOSS现已加入，带来更激烈的战斗体验和丰厚奖励！同时我们优化了服务器响应速度，降低了延迟。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="join-section">
+                <div class="join-container">
+                    <div class="join-text">
+                        <h2>立即加入我们</h2>
+                        <p>只需复制服务器地址，在Minecraft中添加服务器即可加入CTMC！体验惊险奇遇、激烈战斗与极致优化的游戏世界！</p>
+                    </div>
+                    <div class="join-action">
+                        <button class="join-btn">
+                            <i class="fas fa-copy"></i> 复制服务器地址
+                        </button>
+                        <div class="server-address">
+                            <i class="fas fa-server"></i>
+                            <span>103.103.8.155:25565</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 CTMC. 保留所有权利.</p>
+            <p>本网站与Mojang Studios无关</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
