@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于我们 - CTMC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="light-theme">
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="images/CTMC.png" alt="CTMC Logo" class="logo-image">
+            </a>
+            
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link" data-page="home">首页</a></li>
+                <li><a href="status.html" class="nav-link" data-page="status">服务器状态</a></li>
+                <li><a href="downloads.html" class="nav-link" data-page="downloads">整合包下载</a></li>
+                <li><a href="about.html" class="nav-link active" data-page="about">关于我们</a></li>
+            </ul>
+            
+            <div class="theme-toggle">
+                <button id="theme-toggle-btn">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <!-- 关于页面 -->
+        <section id="about" class="page active">
+            <div class="about-section">
+                <h1>关于我们</h1>
+                <div class="about-content">
+                    <div class="about-story">
+                        <h2>我们的故事</h2>
+                        <p>CTMC创建于2020年，致力于为玩家提供以"奇遇、战斗、优化"为核心的高品质游戏体验。从最初的几个朋友到现在拥有数千名活跃玩家的社区，我们始终坚持"玩家至上"的理念，不断优化服务器性能，丰富游戏内容。</p>
+                    </div>
+
+                    <div class="team-section">
+                        <h2>管理团队</h2>
+                        <div class="team-grid">
+                            <div class="team-card">
+                                <div class="team-avatar">
+                                    <i class="fas fa-user-shield"></i>
+                                </div>
+                                <h3>管理员</h3>
+                                <p>负责服务器整体运营和技术维护</p>
+                            </div>
+                            <div class="team-card">
+                                <div class="team-avatar">
+                                    <i class="fas fa-gavel"></i>
+                                </div>
+                                <h3>版主</h3>
+                                <p>维护游戏秩序，处理玩家问题</p>
+                            </div>
+                            <div class="team-card">
+                                <div class="team-avatar">
+                                    <i class="fas fa-code"></i>
+                                </div>
+                                <h3>开发者</h3>
+                                <p>开发自定义插件和功能</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contact-section">
+                        <h2>联系我们</h2>
+                        <div class="contact-grid">
+                            <div class="contact-card">
+                                <i class="fab fa-qq"></i>
+                                <h3>QQ群</h3>
+                                <p>123456789</p>
+                            </div>
+                            <div class="contact-card">
+                                <i class="fab fa-discord"></i>
+                                <h3>Discord</h3>
+                                <p>discord.gg/example</p>
+                            </div>
+                            <div class="contact-card">
+                                <i class="fas fa-envelope"></i>
+                                <h3>邮箱</h3>
+                                <p>admin@ctmcserver.com</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rules-section">
+                        <h2>服务器规则</h2>
+                        <div class="rules-list">
+                            <div class="rule-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>禁止使用外挂或作弊程序</span>
+                            </div>
+                            <div class="rule-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>尊重其他玩家，禁止辱骂或骚扰</span>
+                            </div>
+                            <div class="rule-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>禁止恶意破坏他人建筑</span>
+                            </div>
+                            <div class="rule-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>合理使用服务器资源</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 CTMC. 保留所有权利.</p>
+            <p>本网站与Mojang Studios无关</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
