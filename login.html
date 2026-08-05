@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 - GCMC</title>
+    <meta name="description" content="登录 GCMC 账号">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#3498db">
+    <link rel="canonical" href="https://mc.acmcdev.top/login.html">
+    <link rel="icon" type="image/png" href="images/server-icon.png">
+    <script>(function(){try{var t=localStorage.getItem('theme');if(t==='auto')t=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';document.documentElement.className=t+'-theme';}catch(e){document.documentElement.className='light-theme';}})();</script>
+    <link rel="stylesheet" href="vendor/fontawesome/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="vendor/fontawesome/css/all.min.css"></noscript>
+    <link rel="stylesheet" href="css/style.css?v=20260726">
+    <link rel="stylesheet" href="css/auth.css?v=20260726">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo"><img src="images/CTMC.png" alt="GCMC Logo" class="logo-image"></a>
+            <button class="hamburger" id="hamburger-btn" aria-label="菜单"><span></span><span></span><span></span></button>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">首页</a></li>
+                <li><a href="status.html" class="nav-link">服务器状态</a></li>
+                <li><a href="downloads.html" class="nav-link">整合包下载</a></li>
+                <li><a href="about.html" class="nav-link">关于我们</a></li>
+                <li><a href="login.html" class="nav-link active">登录</a></li>
+                <li><a href="register.html" class="nav-link">注册</a></li>
+            </ul>
+            <div class="theme-toggle"><button id="theme-toggle-btn" aria-label="切换主题"><i class="fas fa-moon"></i></button></div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="auth-page">
+            <!-- 登录卡片 -->
+            <div class="auth-card" id="login-card">
+                <div class="auth-header">
+                    <h1><i class="fas fa-sign-in-alt"></i> 登录</h1>
+                    <p>登录 GCMC 账号以访问更多功能</p>
+                </div>
+                <form id="login-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="login-username"><i class="fas fa-user"></i> 用户名</label>
+                        <input type="text" id="login-username" placeholder="请输入用户名" required autocomplete="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password"><i class="fas fa-lock"></i> 密码</label>
+                        <input type="password" id="login-password" placeholder="请输入密码" required autocomplete="current-password">
+                    </div>
+                    <div id="hcaptcha-container" class="hcaptcha-wrap"></div>
+                    <label class="check-row">
+                        <input type="checkbox" id="remember-me"> 记住我（30天免登录）
+                    </label>
+                    <button type="submit" class="auth-btn" id="login-btn"><i class="fas fa-sign-in-alt"></i> 登录</button>
+                </form>
+                <div class="auth-footer">
+                    <p>还没有账号？<a href="register.html">立即注册</a></p>
+                </div>
+            </div>
+            <!-- 2FA 验证卡片（默认隐藏） -->
+            <div class="auth-card" id="2fa-card" style="display:none;">
+                <div class="auth-header">
+                    <h1><i class="fas fa-shield-alt"></i> 两步验证</h1>
+                    <p>你的账号已启用两步验证，请输入身份验证器中的动态码</p>
+                </div>
+                <form id="2fa-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="2fa-code"><i class="fas fa-key"></i> 验证码</label>
+                        <input type="text" id="2fa-code" placeholder="输入 6 位验证码" required
+                            maxlength="6" inputmode="numeric" autocomplete="one-time-code">
+                    </div>
+                    <button type="submit" class="auth-btn" id="2fa-btn"><i class="fas fa-check"></i> 验证并登录</button>
+                    <button type="button" class="auth-btn secondary" id="cancel-2fa-btn">返回密码登录</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <img src="images/server-icon.png" alt="GCMC" class="footer-logo">
+                <h3>GCMC</h3>
+                <p>一个温馨的 Minecraft 原版生存服社区</p>
+            </div>
+            <div class="footer-cols">
+                <div class="footer-col">
+                    <h4>导航</h4>
+                    <ul>
+                        <li><a href="index.html">首页</a></li><li><a href="status.html">服务器状态</a></li>
+                        <li><a href="downloads.html">整合包下载</a></li><li><a href="about.html">关于我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>资源</h4>
+                    <ul>
+                        <li><a href="https://www.minecraft.net/" target="_blank" rel="noopener">Minecraft 官网</a></li>
+                        <li><a href="https://modrinth.com/modpack/fabulously-optimized" target="_blank" rel="noopener">Fabulously Optimized</a></li>
+                        <li><a href="https://mcstatus.io" target="_blank" rel="noopener">状态查询 API</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>社群</h4>
+                    <ul>
+                        <li><a href="https://qm.qq.com/q/hCmWHUv7Lq" target="_blank" rel="noopener">QQ 群</a></li>
+                        <li><a href="https://github.com/com-in/CTMinecraftServerWeb" target="_blank" rel="noopener">GitHub 仓库</a></li>
+                        <li><a href="#" data-copy="mcs.acmcdev.top">复制服务器地址</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 GCMC. 保留所有权利.</span>
+            <span>本网站与 Mojang Studios 无关</span>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { initTheme, bindThemeToggle } from './js/theme.js';
+        import { showToast } from './js/ui.js';
+        import { login, verify2FA, isLoggedIn, fetchProfile, clearToken } from './js/auth.js';
+        import { sha256 } from './js/crypto.js';
+
+        initTheme();
+        bindThemeToggle();
+        document.getElementById('hamburger-btn')?.addEventListener('click', () => document.body.classList.toggle('nav-open'));
+
+        // 验证旧 token 是否有效，无效则清除（避免跳转 profile 后 401 死循环）
+        if (isLoggedIn()) {
+            try {
+                await fetchProfile();
+                window.location.href = '/profile.html';
+            } catch {
+                clearToken();
+                localStorage.removeItem('ctmc_user');
+            }
+        }
+
+        let tempToken = null;
+        let rememberMeVal = false;
+
+        // ===== hCaptcha 人机验证（脚本加载失败时降级为本地算术题） =====
+        const HCAPTCHA_SITE_KEY = '6032461a-efd2-45d0-8696-a7f8e1c6f682';
+        let hcaptchaWidgetId = null;
+        let hcaptchaCallback = null;
+        let hcaptchaReady = false;          // true 表示 hCaptcha 真的能用
+        let fallbackAnswer = null;          // 算术题正确值
+
+        function getHCaptchaTheme() {
+            const html = document.documentElement;
+            if (html.classList.contains('dark-theme')) return 'dark';
+            return 'light';
+        }
+
+        function useFallbackCaptcha() {
+            const container = document.getElementById('hcaptcha-container');
+            if (!container) return;
+            // 两位数算术题：a + b（10~99）
+            const a = Math.floor(Math.random() * 90) + 10;
+            const b = Math.floor(Math.random() * 90) + 10;
+            fallbackAnswer = a + b;
+            const aStr = a.toString().padStart(2, '0');
+            const bStr = b.toString().padStart(2, '0');
+            // 验证码 key 防脚本盲填
+            const tokenKey = 'ctmc_cap_' + Math.random().toString(36).slice(2, 10);
+            sessionStorage.setItem(tokenKey, JSON.stringify({ a: a, b: b, issuedAt: Date.now() }));
+            container.innerHTML = `
+                <div class="captcha-fallback">
+                    <span>请计算：</span>
+                    <strong data-captcha-key="${tokenKey}">${aStr} + ${bStr} = </strong>
+                    <input type="text" id="captcha-fallback-input" inputmode="numeric" autocomplete="off" maxlength="3" placeholder="??" />
+                </div>
+            `;
+        }
+
+        async function initHCaptcha() {
+            // 本地访问直接降级
+            const isLocalhost = location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.hostname === '::1';
+            if (isLocalhost) { useFallbackCaptcha(); return; }
+
+            // 6 秒超时：脚本被墙时切到降级
+            const timeout = setTimeout(() => {
+                if (!hcaptchaReady) {
+                    console.warn('[hCaptcha] 脚本加载超时，降级为算术验证');
+                    useFallbackCaptcha();
+                }
+            }, 6000);
+
+            return new Promise((resolve) => {
+                if (window.hcaptcha) { hcaptchaReady = true; renderHCaptcha(); clearTimeout(timeout); resolve(); return; }
+                const script = document.createElement('script');
+                // 优先本地缓存，失败回退 CDN，最后降级为算术题
+                script.src = 'vendor/hcaptcha/api.js?render=explicit&onload=hcaptchaOnLoad';
+                script.async = true;
+                script.defer = true;
+                script.onerror = () => {
+                    // 本地失败：试 CDN
+                    const s2 = document.createElement('script');
+                    s2.src = 'https://js.hcaptcha.com/1/api.js?render=explicit&onload=hcaptchaOnLoad';
+                    s2.onerror = () => { clearTimeout(timeout); if (!hcaptchaReady) { useFallbackCaptcha(); resolve(); } };
+                    document.head.appendChild(s2);
+                };
+                window.hcaptchaOnLoad = () => { hcaptchaReady = true; clearTimeout(timeout); renderHCaptcha(); resolve(); };
+                document.head.appendChild(script);
+            });
+        }
+
+        function renderHCaptcha() {
+            if (hcaptchaWidgetId !== null) { hcaptcha.reset(hcaptchaWidgetId); return; }
+            hcaptchaWidgetId = hcaptcha.render('hcaptcha-container', {
+                sitekey: HCAPTCHA_SITE_KEY,
+                theme: getHCaptchaTheme(),
+                size: 'normal',
+                callback: (token) => { if (hcaptchaCallback) hcaptchaCallback(token); },
+            });
+        }
+
+        function getHCaptchaToken() {
+            if (hcaptchaReady && hcaptchaWidgetId !== null) {
+                return hcaptcha.getResponse(hcaptchaWidgetId) || '';
+            }
+            // 降级方案：算术题
+            // 校验维度：1) 答案正确 2) 答题耗时 ≥ 1.5s（防脚本瞬填）3) tokenKey 存在
+            const input = document.getElementById('captcha-fallback-input');
+            const strong = document.querySelector('.captcha-fallback strong');
+            if (!input || !strong || fallbackAnswer === null) return '';
+            const val = parseInt(input.value, 10);
+            if (val !== fallbackAnswer) return '';
+            const tokenKey = strong.dataset.captchaKey;
+            if (!tokenKey) return '';
+            const record = JSON.parse(sessionStorage.getItem(tokenKey) || 'null');
+            if (!record) return '';
+            const elapsed = Date.now() - (record.issuedAt || 0);
+            // 答题过快（< 1500ms）视为脚本
+            if (elapsed < 1500) {
+                showToast('请稍后再试', { type: 'error' });
+                useFallbackCaptcha();
+                return '';
+            }
+            // 超时（> 5 分钟）需刷新
+            if (elapsed > 5 * 60 * 1000) {
+                useFallbackCaptcha();
+                return '';
+            }
+            sessionStorage.removeItem(tokenKey);
+            return 'fallback_ok';
+        }
+
+        function resetHCaptcha() {
+            if (hcaptchaReady && hcaptchaWidgetId !== null) {
+                hcaptcha.reset(hcaptchaWidgetId);
+            } else {
+                // 重新生成算术题
+                useFallbackCaptcha();
+            }
+        }
+
+        // 主题切换时重新渲染
+        window.addEventListener('themechange', () => {
+            if (hcaptchaReady && hcaptchaWidgetId !== null) {
+                hcaptcha.reset(hcaptchaWidgetId);
+            }
+        });
+
+        initHCaptcha();
+
+        // ===== 登录表单 =====
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('login-username').value.trim();
+            const password = document.getElementById('login-password').value;
+            rememberMeVal = document.getElementById('remember-me').checked;
+            const btn = document.getElementById('login-btn');
+
+            if (!username || !password) { showToast('请输入用户名和密码', { type: 'error' }); return; }
+
+            // 获取 hCaptcha token（含算术题降级校验）
+            const hcaptchaToken = getHCaptchaToken();
+            if (!hcaptchaToken) { showToast('请完成人机验证', { type: 'error' }); return; }
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 登录中...';
+
+            try {
+                // SHA256 客户端哈希后传输，密码原文不离开浏览器
+                const hashedPassword = await sha256(password);
+                const data = await login(username, hashedPassword, rememberMeVal, hcaptchaToken);
+                if (data.require2FA) {
+                    if (!data.tempToken) { showToast('服务器返回异常，请重试', { type: 'error' }); btn.disabled = false; btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> 登录'; return; }
+                    tempToken = data.tempToken;
+                    document.getElementById('login-card').style.display = 'none';
+                    document.getElementById('2fa-card').style.display = '';
+                    document.getElementById('2fa-code').focus();
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> 登录';
+                } else {
+                    showToast('登录成功！');
+                    setTimeout(() => { window.location.href = '/profile.html'; }, 500);
+                }
+            } catch (err) {
+                showToast(err.message, { type: 'error' });
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> 登录';
+            } finally {
+                resetHCaptcha();
+            }
+        });
+
+        // ===== 2FA 验证表单 =====
+        document.getElementById('2fa-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const code = document.getElementById('2fa-code').value.trim();
+            const btn = document.getElementById('2fa-btn');
+
+            if (!code || code.length !== 6) { showToast('请输入 6 位验证码', { type: 'error' }); return; }
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 验证中...';
+
+            try {
+                await verify2FA(tempToken, code, rememberMeVal);
+                showToast('登录成功！');
+                setTimeout(() => { window.location.href = '/profile.html'; }, 500);
+            } catch (err) {
+                showToast(err.message, { type: 'error' });
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-check"></i> 验证并登录';
+            }
+        });
+
+        // 返回密码登录
+        document.getElementById('cancel-2fa-btn').addEventListener('click', () => {
+            document.getElementById('2fa-card').style.display = 'none';
+            document.getElementById('login-card').style.display = '';
+            document.getElementById('2fa-code').value = '';
+            tempToken = null;
+        });
+    </script>
+</body>
+</html>

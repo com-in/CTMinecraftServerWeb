@@ -1,0 +1,18 @@
+name: WebBind
+version: 1.3
+main: com.ctmc.verify.CTMCVerify
+api-version: 1.21
+description: GCMC 网站游戏账号绑定验证插件
+commands:
+  bind:
+    description: 输入网站获取的验证码，绑定你的游戏账号，或立即同步玩家数据
+    usage: /<命令> <验证码|sync|reload>
+  webbind:
+    description: 输入网站获取的验证码，绑定你的游戏账号，或立即同步玩家数据
+    usage: /<命令> <验证码|sync|reload>
+  gcbind:
+    description: 输入网站获取的验证码，绑定你的游戏账号，或立即同步玩家数据
+    usage: /<命令> <验证码|sync|reload>
+  dailygift:
+    description: 领取每日福利
+    usage: /<命令>

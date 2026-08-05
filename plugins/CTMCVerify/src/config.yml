@@ -1,0 +1,22 @@
+# WebBind 插件配置文件
+# 网站验证服务的地址（与 Web 共用 3000 端口）
+api-url: "http://localhost:3000/api/game/confirm-verify"
+
+# API 密钥，需与网站数据库中的 game_api_key 一致
+api-key: "ctmc-verify-secret"
+
+# 自定义绑定指令（reload 固定保留，无需添加）
+# 修改后使用 /gcbind reload 重载配置即可生效
+custom-commands:
+  - bind
+  - webbind
+
+# 背包同步功能
+# sync-url：背包数据上报地址
+sync-url: "http://localhost:3000/api/inventory/sync"
+# sync-interval：同步间隔（秒），默认 60 秒
+sync-interval: 60
+
+# 每日福利查询
+# daily-claim-url：每日福利 API 地址
+daily-claim-url: "http://localhost:3000/api/daily-reward/claim"

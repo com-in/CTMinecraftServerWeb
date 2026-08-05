@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# 资源文件无需索引
+Disallow: /js/
+Disallow: /css/
+
+Sitemap: https://mc.acmcdev.top/sitemap.xml

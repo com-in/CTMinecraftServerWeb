@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GCMC - 我的世界原版生存服</title>
+    <meta name="description" content="GCMC 是一个温馨的 Minecraft 我的世界原版生存服社区，由 GCMC 团队在 Fabulously Optimized 基础上亲自调优整合包，提供稳定的游戏体验与活跃的 QQ 群社群。">
+    <meta name="keywords" content="GCMC, Minecraft, 我的世界, MC 服务器, 原版生存服, 整合包, Fabulously Optimized, Modrinth, Fabric, QQ 群">
+    <meta name="author" content="GCMC 团队">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#3498db">
+    <link rel="canonical" href="https://mc.acmcdev.top/">
+    <link rel="icon" type="image/png" href="images/server-icon.png">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preload" href="vendor/fontawesome/css/all.min.css" as="style">
+    <link rel="dns-prefetch" href="https://api.mcstatus.io">
+    <!-- Open Graph -->
+    <meta property="og:title" content="GCMC - 我的世界原版生存服">
+    <meta property="og:description" content="GCMC 团队亲自调优的 Minecraft 原版生存服，整合 Fabulously Optimized，提供稳定流畅的游戏体验。">
+    <meta property="og:image" content="https://mc.acmcdev.top/images/server-icon.png">
+    <meta property="og:url" content="https://mc.acmcdev.top/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="GCMC">
+    <meta property="og:locale" content="zh_CN">
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="GCMC - 我的世界原版生存服">
+    <meta name="twitter:description" content="GCMC 团队亲自调优的 Minecraft 原版生存服，整合 Fabulously Optimized，提供稳定流畅的游戏体验。">
+    <meta name="twitter:image" content="https://mc.acmcdev.top/images/server-icon.png">
+    <!-- JSON-LD 结构化数据 -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "GCMC",
+        "alternateName": ["GCMC 原版生存服"],
+        "url": "https://mc.acmcdev.top",
+        "logo": "https://mc.acmcdev.top/images/server-icon.png",
+        "description": "Minecraft 我的世界原版生存服社区",
+        "foundingDate": "2020",
+        "sameAs": [
+            "https://qm.qq.com/q/hCmWHUv7Lq",
+            "https://github.com/com-in/CTMinecraftServerWeb"
+        ]
+    }
+    </script>
+    <script>(function(){try{var t=localStorage.getItem('theme');if(t==='auto')t=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';document.documentElement.className=t+'-theme';}catch(e){document.documentElement.className='light-theme';}})();</script>
+    <link rel="stylesheet" href="vendor/fontawesome/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="vendor/fontawesome/css/all.min.css"></noscript>
+    <link rel="stylesheet" href="css/style.css?v=20260725">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="images/CTMC.png" alt="GCMC Logo" class="logo-image">
+            </a>
+
+            <button class="hamburger" id="hamburger-btn" aria-label="菜单">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link active" data-page="home">首页</a></li>
+                <li><a href="status.html" class="nav-link" data-page="status">服务器状态</a></li>
+                <li><a href="downloads.html" class="nav-link" data-page="downloads">整合包下载</a></li>
+                <li><a href="about.html" class="nav-link" data-page="about">关于我们</a></li>
+                <li id="nav-login"><a href="login.html" class="nav-link">登录</a></li>
+                <li id="nav-register"><a href="register.html" class="nav-link">注册</a></li>
+                <li id="nav-profile" style="display:none;"><a href="login.html" class="nav-link profile-nav">个人中心</a></li>
+            </ul>
+
+            <div class="theme-toggle">
+                <button id="theme-toggle-btn" aria-label="切换主题">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <!-- 首页 -->
+        <section id="home" class="page active">
+            <div class="hero-section">
+                <div class="hero-content">
+                    <h1>欢迎来到 GCMC</h1>
+                    <p>加入 GoldenCarrotMC(原CTMC) 原版生存服，与志同道合的玩家一起享受纯粹的 Minecraft 乐趣！</p>
+                    <div class="hero-actions">
+                        <a href="status.html" class="hero-btn">
+                            <i class="fas fa-server"></i>
+                            <span>查看服务器状态</span>
+                        </a>
+                        <a href="downloads.html" class="hero-btn secondary">
+                            <i class="fas fa-download"></i>
+                            <span>下载整合包</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="features-section">
+                <h2>原版生存服特色</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-cube"></i></div>
+                        <h3>原版体验</h3>
+                        <p>完整保留原版玩法与合成表，无添加任务/MMO 元素，给你最纯粹的 Minecraft 生存体验</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-code-branch"></i></div>
+                        <h3>跨版本兼容</h3>
+                        <p>原版客户端 1.21.11 至 1.9 全版本均可直接连接，无需安装任何 Mod</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                        <h3>稳定性能</h3>
+                        <p>服务端深度优化与 GCMC 调优版整合包加持，低延迟、零卡顿，畅快游戏</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-users"></i></div>
+                        <h3>友好社群</h3>
+                        <p>加入 QQ 群大家庭，与友善的玩家一起建造、探索、分享你的冒险故事</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="join-section">
+                <div class="join-container">
+                    <div class="join-text">
+                        <h2>立即加入我们</h2>
+                        <p>只需复制服务器地址，在 Minecraft 中添加服务器即可加入 GCMC 原版生存服，开启你的纯粹 Minecraft 生存之旅！</p>
+                    </div>
+                    <div class="join-action">
+                        <button class="join-btn" data-copy="mcs.acmcdev.top">
+                            <i class="fas fa-copy"></i> 复制服务器地址
+                        </button>
+                        <div class="server-address">
+                            <i class="fas fa-server"></i>
+                            <span>mcs.acmcdev.top</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <img src="images/server-icon.png" alt="GCMC" class="footer-logo">
+                <h3>GCMC</h3>
+                <p>一个温馨的 Minecraft 原版生存服社区</p>
+            </div>
+            <div class="footer-cols">
+                <div class="footer-col">
+                    <h4>导航</h4>
+                    <ul>
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="status.html">服务器状态</a></li>
+                        <li><a href="downloads.html">整合包下载</a></li>
+                        <li><a href="about.html">关于我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>资源</h4>
+                    <ul>
+                        <li><a href="https://www.minecraft.net/" target="_blank" rel="noopener">Minecraft 官网</a></li>
+                        <li><a href="https://modrinth.com/modpack/fabulously-optimized" target="_blank" rel="noopener">Fabulously Optimized</a></li>
+                        <li><a href="https://mcstatus.io" target="_blank" rel="noopener">状态查询 API</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>社群</h4>
+                    <ul>
+                        <li><a href="https://qm.qq.com/q/hCmWHUv7Lq" target="_blank" rel="noopener">QQ 群</a></li>
+                        <li><a href="https://github.com/com-in/CTMinecraftServerWeb" target="_blank" rel="noopener">GitHub 仓库</a></li>
+                        <li><a href="#" data-copy="mcs.acmcdev.top">复制服务器地址</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 GCMC. 保留所有权利.</span>
+            <span>本网站与 Mojang Studios 无关</span>
+        </div>
+    </footer>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>

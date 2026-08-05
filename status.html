@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>服务器状态 - GCMC</title>
+    <meta name="description" content="实时查看 GCMC Minecraft 我的世界原版生存服状态：在线人数、延迟、版本、MOTD 等数据，自动每 5 分钟刷新。">
+    <meta name="keywords" content="GCMC, Minecraft 服务器状态, MC 服务器在线, 服务器监控, 我的世界服务器">
+    <meta name="author" content="GCMC 团队">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#3498db">
+    <link rel="canonical" href="https://mc.acmcdev.top/status.html">
+    <link rel="icon" type="image/png" href="images/server-icon.png">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="dns-prefetch" href="https://api.mcstatus.io">
+    <link rel="dns-prefetch" href="https://mc-heads.net">
+    <!-- Open Graph -->
+    <meta property="og:title" content="服务器状态 - GCMC">
+    <meta property="og:description" content="实时查看 GCMC Minecraft 原版生存服状态：在线人数、延迟、版本。">
+    <meta property="og:image" content="https://mc.acmcdev.top/images/server-icon.png">
+    <meta property="og:url" content="https://mc.acmcdev.top/status.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="GCMC">
+    <meta property="og:locale" content="zh_CN">
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="服务器状态 - GCMC">
+    <meta name="twitter:description" content="实时查看 GCMC Minecraft 原版生存服状态。">
+    <meta name="twitter:image" content="https://mc.acmcdev.top/images/server-icon.png">
+    <script>(function(){try{var t=localStorage.getItem('theme');if(t==='auto')t=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';document.documentElement.className=t+'-theme';}catch(e){document.documentElement.className='light-theme';}})();</script>
+    <link rel="stylesheet" href="vendor/fontawesome/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="vendor/fontawesome/css/all.min.css"></noscript>
+    <link rel="stylesheet" href="css/style.css?v=20260725">
+    <script src="vendor/chartjs/chart.umd.min.js" defer></script>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="images/CTMC.png" alt="GCMC Logo" class="logo-image">
+            </a>
+            
+            <button class="hamburger" id="hamburger-btn" aria-label="菜单">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link" data-page="home">首页</a></li>
+                <li><a href="status.html" class="nav-link active" data-page="status">服务器状态</a></li>
+                <li><a href="downloads.html" class="nav-link" data-page="downloads">整合包下载</a></li>
+                <li><a href="about.html" class="nav-link" data-page="about">关于我们</a></li>
+                <li id="nav-login"><a href="login.html" class="nav-link">登录</a></li>
+                <li id="nav-register"><a href="register.html" class="nav-link">注册</a></li>
+                <li id="nav-profile" style="display:none;"><a href="login.html" class="nav-link profile-nav">个人中心</a></li>
+            </ul>
+
+            <div class="theme-toggle">
+                <button id="theme-toggle-btn" aria-label="切换主题">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <!-- 状态页面 -->
+        <section id="status" class="page active">
+            <div class="container">
+                <div class="page-header">
+                    <div class="page-header-text">
+                        <h1>服务器状态</h1>
+                        <p class="page-subtitle">实时监控 GCMC 服务器运行状态</p>
+                        <p class="last-updated">最后更新：<span id="last-updated">--</span></p>
+                    </div>
+                    <button id="refresh-btn" class="refresh-btn" type="button" aria-label="刷新状态" title="刷新状态">
+                        <i class="fas fa-sync-alt"></i>
+                        <span class="refresh-btn-text">刷新</span>
+                    </button>
+                </div>
+
+                <div class="server-grid">
+                    <!-- 主服务器 -->
+                    <div class="server-card" id="main-card">
+                        <div class="server-card-header">
+                            <img class="server-icon" id="main-icon" src="images/server-icon.png" alt="GCMC 服务器 Logo">
+                            <div class="server-card-info">
+                                <div class="server-card-title">
+                                    <h3 class="server-name" id="main-name">GCMC</h3>
+                                    <span class="server-dot loading" id="main-dot" title="加载中"></span>
+                                </div>
+                                <div class="server-address-text" id="main-address">mcs.acmcdev.top</div>
+                            </div>
+                        </div>
+
+                        <div class="server-card-stats">
+                            <div class="server-latency">
+                                <div class="signal-bars level-0" id="main-bars" aria-label="延迟">
+                                    <span class="bar"></span>
+                                    <span class="bar"></span>
+                                    <span class="bar"></span>
+                                    <span class="bar"></span>
+                                    <span class="bar"></span>
+                                </div>
+                                <span class="latency-text" id="main-ping">--</span>
+                            </div>
+                            <div class="server-players">
+                                <i class="fas fa-users"></i>
+                                <span id="main-players">--/--</span>
+                            </div>
+                        </div>
+
+                        <div class="server-card-motd" id="main-motd">
+                            <div class="motd-line motd-loading">正在获取服务器信息...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 服务器统计摘要 -->
+                <div class="server-stats-summary">
+                    <div class="summary-card">
+                        <h3>服务器统计</h3>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <i class="fas fa-users"></i>
+                                <span class="label">在线玩家</span>
+                                <span class="value" id="total-players">--</span>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-server"></i>
+                                <span class="label">服务器版本</span>
+                                <span class="value" id="main-version">--</span>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-clock"></i>
+                                <span class="label">当前可用度</span>
+                                <span class="value" id="avg-uptime-summary">--</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 实时数据：折线图 + 玩家列表 -->
+                <div class="live-section">
+                    <div class="chart-section">
+                        <h3><i class="fas fa-chart-line"></i> 实时在线人数</h3>
+                        <div class="chart-container">
+                            <canvas id="player-chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="player-list-section">
+                        <h3><i class="fas fa-users"></i> 在线玩家</h3>
+                        <div class="player-list" id="player-list">
+                            <p class="player-list-empty">加载中…</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <img src="images/server-icon.png" alt="GCMC" class="footer-logo">
+                <h3>GCMC</h3>
+                <p>一个温馨的 Minecraft 原版生存服社区</p>
+            </div>
+            <div class="footer-cols">
+                <div class="footer-col">
+                    <h4>导航</h4>
+                    <ul>
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="status.html">服务器状态</a></li>
+                        <li><a href="downloads.html">整合包下载</a></li>
+                        <li><a href="about.html">关于我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>资源</h4>
+                    <ul>
+                        <li><a href="https://www.minecraft.net/" target="_blank" rel="noopener">Minecraft 官网</a></li>
+                        <li><a href="https://modrinth.com/modpack/fabulously-optimized" target="_blank" rel="noopener">Fabulously Optimized</a></li>
+                        <li><a href="https://mcstatus.io" target="_blank" rel="noopener">状态查询 API</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>社群</h4>
+                    <ul>
+                        <li><a href="https://qm.qq.com/q/hCmWHUv7Lq" target="_blank" rel="noopener">QQ 群</a></li>
+                        <li><a href="https://github.com/com-in/CTMinecraftServerWeb" target="_blank" rel="noopener">GitHub 仓库</a></li>
+                        <li><a href="#" data-copy="mcs.acmcdev.top">复制服务器地址</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 GCMC. 保留所有权利.</span>
+            <span>本网站与 Mojang Studios 无关</span>
+        </div>
+    </footer>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>

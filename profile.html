@@ -1,0 +1,2382 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人中心 - GCMC</title>
+    <meta name="description" content="GCMC 个人中心">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#3498db">
+    <link rel="canonical" href="https://mc.acmcdev.top/profile.html">
+    <link rel="icon" type="image/png" href="images/server-icon.png">
+    <script>(function(){try{var t=localStorage.getItem('theme');if(t==='auto')t=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';document.documentElement.className=t+'-theme';}catch(e){document.documentElement.className='light-theme';}})();</script>
+    <link rel="stylesheet" href="vendor/fontawesome/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="vendor/fontawesome/css/all.min.css"></noscript>
+    <link rel="stylesheet" href="css/style.css?v=20260726">
+    <link rel="stylesheet" href="css/auth.css?v=20260726">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo"><img src="images/CTMC.png" alt="GCMC Logo" class="logo-image"></a>
+            <button class="hamburger" id="hamburger-btn" aria-label="菜单"><span></span><span></span><span></span></button>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">首页</a></li><li><a href="status.html" class="nav-link">服务器状态</a></li>
+                <li><a href="downloads.html" class="nav-link">整合包下载</a></li><li><a href="about.html" class="nav-link">关于我们</a></li>
+                <li><a href="login.html" class="nav-link active">个人中心</a></li>
+            </ul>
+            <div class="theme-toggle"><button id="theme-toggle-btn" aria-label="切换主题"><i class="fas fa-moon"></i></button></div>
+        </div>
+    </nav>
+
+    <main class="profile-layout">
+
+        <!-- ===== 左侧栏 ===== -->
+        <aside class="profile-sidebar" id="sidebar">
+            <!-- 用户卡片 -->
+            <div class="profile-user-card">
+                <div class="profile-avatar" id="sidebar-avatar" style="cursor:pointer;" title="点击修改头像">?</div>
+                <div class="profile-name-display" id="sidebar-name">加载中...</div>
+                <div class="profile-nickname-display" id="sidebar-nickname"></div>
+                <div class="profile-id-display" id="sidebar-id">#-</div>
+                <span class="profile-role-badge role-user" id="sidebar-role">用户</span>
+                <div style="margin-top:0.5rem;" id="sidebar-status"></div>
+            </div>
+
+            <!-- 菜单卡片 -->
+            <div class="profile-menu-card">
+            <ul class="profile-menu">
+                <li><a class="active" data-page="overview"><i class="fas fa-tachometer-alt"></i> 账号概览</a></li>
+                <li><a data-page="profile"><i class="fas fa-id-card"></i> 个人资料</a></li>
+                <li><a data-page="mc"><i class="fas fa-gamepad"></i> Minecraft 账号</a></li>
+                <li><a data-page="daily"><i class="fas fa-gift"></i> 每日福利</a></li>
+                <li><a data-page="security"><i class="fas fa-shield-alt"></i> 安全设置</a></li>
+                <li><a data-page="sessions"><i class="fas fa-desktop"></i> 会话管理</a></li>
+                <li><a data-page="logs"><i class="fas fa-history"></i> 活动记录</a></li>
+                <li id="menu-admin" style="display:none;"><a data-page="admin"><i class="fas fa-users-cog"></i> 用户管理</a></li>
+                <li id="menu-settings" style="display:none;"><a data-page="settings"><i class="fas fa-cog"></i> 系统设置</a></li>
+                <li class="menu-separator"><a class="menu-danger" id="menu-logout"><i class="fas fa-sign-out-alt"></i> 退出登录</a></li>
+            </ul>
+            </div>
+        </aside>
+
+        <!-- ===== 右侧内容区 ===== -->
+        <section class="profile-content" id="content">
+
+            <!-- 账号概览 -->
+            <div class="page-panel" id="page-overview">
+                <h2 class="section-title"><i class="fas fa-tachometer-alt"></i> 账号概览</h2>
+
+                <div class="overview-cards">
+                    <div class="overview-card">
+                        <div class="oc-icon">&#128274;</div>
+                        <div class="oc-value" id="ov-2fa">-</div>
+                        <div class="oc-label">安全评分</div>
+                    </div>
+                    <div class="overview-card">
+                        <div class="oc-icon">&#128187;</div>
+                        <div class="oc-value" id="ov-sessions">-</div>
+                        <div class="oc-label">活跃会话</div>
+                    </div>
+                    <div class="overview-card">
+                        <div class="oc-icon">&#128203;</div>
+                        <div class="oc-value" id="ov-logins">-</div>
+                        <div class="oc-label">登录次数</div>
+                    </div>
+                    <div class="overview-card">
+                        <div class="oc-icon">&#128197;</div>
+                        <div class="oc-value" id="ov-days">-</div>
+                        <div class="oc-label">注册天数</div>
+                    </div>
+                </div>
+
+                <!-- 安全评分 -->
+                <div class="security-score" id="security-score-card">
+                    <div class="security-ring">
+                        <svg width="80" height="80" viewBox="0 0 80 80">
+                            <circle cx="40" cy="40" r="34" fill="none" stroke="currentColor" stroke-width="6" opacity="0.15"/>
+                            <circle cx="40" cy="40" r="34" fill="none" stroke="#2ecc71" stroke-width="6" stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="0" id="score-ring"/>
+                        </svg>
+                        <div class="score-text" id="score-text">100</div>
+                    </div>
+                    <div class="security-detail" id="security-checklist">
+                        <div class="sd-item done"><i class="fas fa-check-circle"></i> 密码已设置</div>
+                        <div class="sd-item todo"><i class="fas fa-circle"></i> 未开启两步验证</div>
+                        <div class="sd-item todo"><i class="fas fa-circle"></i> 邮箱未验证</div>
+                    </div>
+                </div>
+
+                <!-- 绑定信息 -->
+                <h3 style="font-size:0.95rem;margin-bottom:0.75rem;opacity:0.7;">账号绑定</h3>
+                <div class="binding-item">
+                    <div class="binding-left">
+                        <span class="binding-icon">&#9993;</span>
+                        <div>
+                            <div class="binding-name">邮箱</div>
+                            <div class="binding-detail" id="bind-email">-</div>
+                        </div>
+                    </div>
+                    <span id="bind-email-badge"></span>
+                </div>
+                <div class="binding-item">
+                    <div class="binding-left">
+                        <span class="binding-icon">&#128273;</span>
+                        <div>
+                            <div class="binding-name">两步验证</div>
+                            <div class="binding-detail">通过身份验证器保护账号</div>
+                        </div>
+                    </div>
+                    <span id="bind-2fa-badge"></span>
+                </div>
+
+
+            </div>
+
+            <!-- 个人资料 -->
+            <div class="page-panel" id="page-profile" style="display:none;">
+                <h2 class="section-title"><i class="fas fa-id-card"></i> 个人资料</h2>
+                <div class="info-row" style="align-items:center;">
+                    <span class="info-label"><i class="fas fa-camera"></i> 头像</span>
+                    <span class="info-value" id="pi-avatar" style="display:flex;align-items:center;gap:0.5rem;">
+                        <div id="pi-avatar-img" style="width:48px;height:48px;border-radius:50%;overflow:hidden;background:linear-gradient(135deg,#3498db,#2ecc71);display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:700;color:#fff;"></div>
+                        <button class="auth-btn secondary" id="pi-avatar-btn" style="font-size:0.75rem;padding:0.3rem 0.7rem;">修改头像</button>
+                    </span>
+                </div>
+                <div class="info-row"><span class="info-label"><i class="fas fa-user"></i> 用户名</span><span class="info-value" id="pi-username">-</span></div>
+                <div class="info-row"><span class="info-label"><i class="fas fa-tag"></i> 昵称</span><span class="info-value" id="pi-nickname">- <button class="auth-btn secondary" id="edit-nickname-btn" style="font-size:0.75rem;padding:0.3rem 0.7rem;">编辑</button></span></div>
+                <div class="info-row"><span class="info-label"><i class="fas fa-envelope"></i> 邮箱</span><span class="info-value" id="pi-email">-</span></div>
+                <div class="info-row"><span class="info-label"><i class="fas fa-shield-alt"></i> 角色</span><span class="info-value" id="pi-role">-</span></div>
+                <div class="info-row"><span class="info-label"><i class="fas fa-circle"></i> 状态</span><span class="info-value" id="pi-status">-</span></div>
+                <div class="info-row"><span class="info-label"><i class="fas fa-calendar-alt"></i> 注册时间</span><span class="info-value" id="pi-created">-</span></div>
+                <div class="info-row"><span class="info-label"><i class="fas fa-gamepad"></i> 游戏账号</span><span class="info-value" id="pi-game">-</span></div>
+            </div>
+
+            <!-- 安全设置 -->
+            <div class="page-panel" id="page-security" style="display:none;">
+                <h2 class="section-title"><i class="fas fa-shield-alt"></i> 安全设置</h2>
+
+                <!-- 2FA -->
+                <div style="margin-bottom:2rem;">
+                    <h3 style="font-size:0.95rem;margin-bottom:1rem;">两步验证 (2FA)</h3>
+                    <div id="2fa-status-area"><p>加载中...</p></div>
+                    <div id="2fa-setup-area" style="display:none;">
+                        <div class="totp-qrcode" id="totp-qrcode"></div>
+                        <form id="2fa-enable-form" class="auth-form" style="margin-top:1rem;">
+                            <div class="form-group">
+                                <label for="2fa-setup-code">输入验证码</label>
+                                <input type="text" id="2fa-setup-code" placeholder="6 位验证码" required maxlength="6" inputmode="numeric">
+                            </div>
+                            <div class="form-error" id="2fa-setup-error"></div>
+                            <button type="submit" class="auth-btn success">启用两步验证</button>
+                        </form>
+                    </div>
+                    <div id="2fa-disable-area" style="display:none;">
+                        <form id="2fa-disable-form" class="auth-form" style="margin-top:1rem;">
+                            <div class="form-group"><label for="2fa-disable-password">输入密码确认</label><input type="password" id="2fa-disable-password" placeholder="请输入密码" required></div>
+                            <div class="form-error" id="2fa-disable-error"></div>
+                            <button type="submit" class="auth-btn danger">禁用两步验证</button>
+                        </form>
+                    </div>
+                </div>
+
+                <hr style="opacity:0.2;margin:1.5rem 0;">
+
+                <!-- 修改密码 -->
+                <h3 style="font-size:0.95rem;margin-bottom:1rem;">修改密码</h3>
+                <form id="change-password-form" class="auth-form" style="max-width:400px;">
+                    <div class="form-group"><label for="cp-current">当前密码</label><input type="password" id="cp-current" placeholder="当前密码" required></div>
+                    <div class="form-group">
+                        <label for="cp-new">新密码</label><input type="password" id="cp-new" placeholder="至少 6 个字符" required minlength="6">
+                        <div class="password-strength" id="cp-strength"><div class="strength-bar"></div><div class="strength-bar"></div><div class="strength-bar"></div><div class="strength-bar"></div><div class="strength-bar"></div></div>
+                        <div class="strength-hint" id="cp-strength-hint"></div>
+                    </div>
+                    <div class="form-group"><label for="cp-new2">确认新密码</label><input type="password" id="cp-new2" placeholder="再次输入新密码" required minlength="6"></div>
+                    <div class="form-error" id="password-error"></div>
+                    <div class="form-success" id="password-success"></div>
+                    <button type="submit" class="auth-btn">修改密码</button>
+                </form>
+
+                <hr style="opacity:0.2;margin:1.5rem 0;">
+
+                <!-- 换绑邮箱 -->
+                <h3 style="font-size:0.95rem;margin-bottom:1rem;">换绑邮箱</h3>
+                <form id="change-email-form" class="auth-form" style="max-width:400px;">
+                    <div class="form-group"><label for="ce-new-email">新邮箱</label><input type="email" id="ce-new-email" placeholder="请输入新邮箱" required></div>
+                    <div class="form-group"><label for="ce-password">当前密码</label><input type="password" id="ce-password" placeholder="确认您的密码" required></div>
+                    <div class="form-error" id="email-change-error"></div>
+                    <div class="form-success" id="email-change-success"></div>
+                    <button type="submit" class="auth-btn">更换邮箱</button>
+                </form>
+
+                <hr style="opacity:0.2;margin:1.5rem 0;">
+
+                <!-- 注销 -->
+                <h3 style="font-size:0.95rem;margin-bottom:0.5rem;color:#e74c3c;">危险区域</h3>
+                <p style="font-size:0.8rem;opacity:0.6;margin-bottom:1rem;">注销后所有数据将被永久删除，无法恢复</p>
+                <form id="delete-account-form" class="auth-form" style="max-width:400px;">
+                    <div class="form-group"><label for="delete-password">输入密码确认</label><input type="password" id="delete-password" placeholder="当前密码" required></div>
+                    <div class="form-error" id="delete-error"></div>
+                    <button type="submit" class="auth-btn danger">永久注销账号</button>
+                </form>
+            </div>
+
+            <!-- 会话管理 -->
+            <div class="page-panel" id="page-sessions" style="display:none;">
+                <h2 class="section-title"><i class="fas fa-desktop"></i> 会话管理</h2>
+                <div id="sessions-list"><p style="text-align:center;opacity:0.5;">加载中...</p></div>
+                <button class="auth-btn secondary" id="refresh-sessions-btn" style="margin-top:1rem;width:100%;">刷新</button>
+            </div>
+
+            <!-- 活动记录 -->
+            <div class="page-panel" id="page-logs" style="display:none;">
+                <h2 class="section-title"><i class="fas fa-history"></i> 活动记录</h2>
+                <div class="collapse-header open" id="collapse-login-header">
+                    <h3><i class="fas fa-sign-in-alt"></i> 登录历史</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="collapse-body" id="collapse-login-body">
+                    <table class="log-table"><tbody id="login-log-tbody"></tbody></table>
+                </div>
+                <div class="collapse-header" id="collapse-activity-header">
+                    <h3><i class="fas fa-list-alt"></i> 活动日志</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="collapse-body hidden" id="collapse-activity-body">
+                    <table class="log-table"><tbody id="activity-log-tbody"></tbody></table>
+                </div>
+            </div>
+
+            <!-- 每日福利 -->
+            <div class="page-panel" id="page-daily" style="display:none;">
+                <h2 class="section-title"><i class="fas fa-gift"></i> 每日福利</h2>
+                <p style="opacity:0.6;font-size:0.85rem;margin-bottom:1rem;">在游戏内使用 <code>/dailygift</code> 领取每日福利，此处仅显示状态</p>
+                <div id="daily-status-area">
+                    <div style="text-align:center;padding:3rem 1rem;">
+                        <div style="font-size:3rem;margin-bottom:1rem;">&#127873;</div>
+                        <p style="opacity:0.5;">加载中...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 用户管理 (admin) -->
+            <div class="page-panel" id="page-admin" style="display:none;">
+                <h2 class="section-title"><i class="fas fa-users-cog"></i> 用户管理</h2>
+                <div class="admin-toolbar">
+                    <button class="auth-btn" id="admin-create-user-btn" style="font-size:0.75rem;padding:0.25rem 0.5rem;"><i class="fas fa-user-plus"></i> 创建</button>
+                    <button class="auth-btn secondary" id="admin-refresh-btn" style="font-size:0.75rem;padding:0.25rem 0.5rem;"><i class="fas fa-sync"></i> 刷新</button>
+                </div>
+                <div class="form-error" id="admin-error"></div>
+                <div class="form-success" id="admin-success"></div>
+                <div id="admin-users-list"></div>
+            </div>
+
+            <!-- 创建用户弹层（横向布局，避免被标题栏遮挡） -->
+            <div class="auth-card" id="create-user-panel" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1000;max-width:560px;width:95%;">
+                <div class="auth-header"><h2><i class="fas fa-user-plus"></i> 创建用户</h2></div>
+                <form id="create-user-form" class="auth-form auth-form-grid">
+                    <div class="form-group"><label for="cu-username">用户名 *</label><input type="text" id="cu-username" required maxlength="20"></div>
+                    <div class="form-group"><label for="cu-email">邮箱 *</label><input type="email" id="cu-email" required></div>
+                    <div class="form-group"><label for="cu-password">密码 *</label><input type="text" id="cu-password" required minlength="6" maxlength="128"></div>
+                    <div class="form-group"><label for="cu-nickname">昵称</label><input type="text" id="cu-nickname" maxlength="20"></div>
+                    <div class="form-group">
+                        <label for="cu-role">角色</label>
+                        <select id="cu-role">
+                            <option value="user">普通用户</option>
+                            <option value="admin">管理员</option>
+                        </select>
+                    </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" id="cu-email-verified">
+                        <label for="cu-email-verified">邮箱已验证</label>
+                    </div>
+                    <div class="form-error" id="cu-error" style="grid-column:1/-1;"></div>
+                    <div class="form-success" id="cu-success" style="grid-column:1/-1;"></div>
+                    <div class="form-actions" style="grid-column:1/-1;">
+                        <button type="submit" class="auth-btn">创建</button>
+                        <button type="button" class="auth-btn secondary" id="cancel-create-user-btn">取消</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 管理员修改密码弹层 -->
+            <div class="auth-card" id="admin-set-password-panel" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1000;max-width:400px;width:90%;">
+                <div class="auth-header"><h2><i class="fas fa-key"></i> 修改用户密码</h2></div>
+                <form id="admin-set-password-form" class="auth-form">
+                    <div class="form-group"><span id="asp-target" style="font-size:0.85rem;opacity:0.8;"></span></div>
+                    <div class="form-group"><label for="asp-password">新密码</label><input type="text" id="asp-password" required minlength="6" maxlength="128"></div>
+                    <div class="form-error" id="asp-error"></div>
+                    <div style="display:flex;gap:0.75rem;">
+                        <button type="submit" class="auth-btn" style="flex:1;">保存</button>
+                        <button type="button" class="auth-btn secondary" id="cancel-asp-btn" style="flex:1;">取消</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 系统设置 (admin) -->
+            <div class="page-panel" id="page-settings" style="display:none;">
+                <h2 class="section-title"><i class="fas fa-cogs"></i> 系统设置</h2>
+                <div class="form-error" id="settings-error"></div>
+                <div class="form-success" id="settings-success"></div>
+                <div id="settings-list">
+                    <p style="text-align:center;opacity:0.5;padding:2rem 0;">加载中...</p>
+                </div>
+            </div>
+
+            <!-- Minecraft 游戏账号 -->
+            <div class="page-panel" id="page-mc" style="display:none;">
+
+                <!-- 顶部：下拉选择 + 加号绑定 + 删除 -->
+                <div class="mc-top-bar">
+                    <span style="font-size:0.85rem;opacity:0.6;">选择游戏账号</span>
+                    <div class="mc-select-row">
+                        <select id="mc-player-select">
+                            <option value="">-- 选择账号 --</option>
+                        </select>
+                        <button class="mc-add-btn" id="mc-add-btn" title="绑定新账号">＋</button>
+                        <button class="mc-del-btn" id="mc-del-btn" title="解绑此账号" style="display:none;">删除</button>
+                    </div>
+                    <div id="mc-top-error" style="font-size:0.7rem;color:#e74c3c;margin-top:0.3rem;display:none;"></div>
+                    <div id="mc-top-success" style="font-size:0.7rem;color:#2ecc71;margin-top:0.3rem;display:none;"></div>
+                </div>
+
+                <!-- 绑定表单（内联展开） -->
+                <div id="mc-bind-form" style="display:none;margin-top:0.6rem;padding:0.75rem;border-radius:0.5rem;border:1px solid rgba(255,255,255,0.08);">
+                    <div style="display:flex;gap:0.4rem;margin-bottom:0.5rem;">
+                        <input type="text" id="mc-bind-username" placeholder="Minecraft 用户名" maxlength="16" style="flex:1;padding:0.5rem 0.7rem;border-radius:0.4rem;border:1px solid;font-size:0.85rem;outline:none;">
+                        <button class="auth-btn" id="mc-bind-btn" style="font-size:0.75rem;padding:0.4rem 0.8rem;">获取验证码</button>
+                        <button class="auth-btn secondary" id="mc-bind-cancel" style="font-size:0.75rem;padding:0.35rem 0.7rem;">取消</button>
+                    </div>
+                    <div id="mc-bind-error" style="font-size:0.7rem;color:#e74c3c;margin-top:0.3rem;display:none;"></div>
+                    <!-- 验证码显示 -->
+                    <div id="mc-verify-panel" style="display:none;margin-top:0.5rem;padding:0.6rem;border-radius:0.4rem;background:rgba(52,152,219,0.08);text-align:center;">
+                        <p style="font-size:0.75rem;margin-bottom:0.3rem;">在游戏中输入：</p>
+                        <div class="mc-verify-row">
+                            <code id="mc-verify-code" style="font-size:1rem;letter-spacing:2px;background:rgba(0,0,0,0.2);padding:0.3rem 0.6rem;border-radius:4px;"></code>
+                            <button class="mc-copy-btn" id="mc-copy-code-btn" type="button" title="复制验证码" aria-label="复制验证码">
+                                <svg class="mc-copy-icon" viewBox="0 0 448 512" width="14" height="14" fill="currentColor" aria-hidden="true">
+                                    <path d="M208 0H332c20.5 0 38.7 12.4 46.3 31.1l43.5 97.5c4.5 10.3 6.2 21.4 6.2 32.4V336c0 26.5-21.5 48-48 48H208c-26.5 0-48-21.5-48-48V48c0-26.5 21.5-48 48-48zm48 304c0-8.8 7.2-16 16-16h64c8.8 0 16 7.2 16 16s-7.2 16-16 16H272c-8.8 0-16-7.2-16-16zm16 64c-8.8 0-16 7.2-16 16s7.2 16 16 16h64c8.8 0 16-7.2 16-16s-7.2-16-16-16H272zM48 120c0-13.3 10.7-24 24-24h80c13.3 0 24 10.7 24 24v8c0 4.4 3.6 8 8 8h16c4.4 0 8-3.6 8-8v-8c0-30.9-25.1-56-56-56H72C41.1 64 16 89.1 16 120v336c0 30.9 25.1 56 56 56h80c30.9 0 56-25.1 56-56v-8c0-4.4-3.6-8-8-8h-16c-4.4 0-8 3.6-8 8v8c0 13.3-10.7 24-24 24H72c-13.3 0-24-10.7-24-24V120z"/>
+                                </svg>
+                                <svg class="mc-check-icon" viewBox="0 0 448 512" width="14" height="14" fill="currentColor" aria-hidden="true" style="display:none;">
+                                    <path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <p style="font-size:0.65rem;opacity:0.5;margin:0.3rem 0;">5 分钟内有效</p>
+                        <div id="mc-verify-error" style="font-size:0.7rem;color:#e74c3c;margin-top:0.3rem;"></div>
+                        <button class="auth-btn secondary" id="mc-check-bind-btn" style="font-size:0.75rem;padding:0.35rem 0.8rem;margin-top:0.3rem;">检查绑定状态</button>
+                    </div>
+                </div>
+
+                <!-- 背包内容区 -->
+                <div>
+                    <!-- 空状态提示 -->
+                    <div id="mc-empty-tip" style="text-align:center;padding:3rem 1rem;display:none;">
+                        <p style="font-size:0.85rem;opacity:0.4;">尚未绑定 Minecraft 游戏账号，点击 ＋ 绑定</p>
+                    </div>
+
+                    <!-- 背包展示 -->
+                    <div id="mc-inv-card" style="display:none;">
+                        <!-- 玩家状态 -->
+                        <div class="player-stats" id="mc-inv-stats" style="margin-bottom:0.5rem;"></div>
+
+                        <!-- 背包 -->
+                        <div style="font-size:0.7rem;opacity:0.5;margin-bottom:0.3rem;">背包</div>
+                        <div style="display:grid;grid-template-columns:repeat(9,1fr);gap:2px;margin-bottom:0.5rem;" id="mc-inv-main"></div>
+
+                        <!-- 快捷栏 -->
+                        <div style="font-size:0.7rem;opacity:0.5;margin-bottom:0.3rem;">快捷栏</div>
+                        <div style="display:grid;grid-template-columns:repeat(9,1fr);gap:2px;" id="mc-inv-hotbar"></div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand"><img src="images/server-icon.png" alt="GCMC" class="footer-logo"><h3>GCMC</h3><p>一个温馨的 Minecraft 原版生存服社区</p></div>
+            <div class="footer-cols">
+                <div class="footer-col"><h4>导航</h4><ul><li><a href="index.html">首页</a></li><li><a href="status.html">服务器状态</a></li><li><a href="downloads.html">整合包下载</a></li><li><a href="about.html">关于我们</a></li></ul></div>
+                <div class="footer-col"><h4>社群</h4><ul><li><a href="https://qm.qq.com/q/hCmWHUv7Lq" target="_blank" rel="noopener">QQ 群</a></li><li><a href="https://github.com/com-in/CTMinecraftServerWeb" target="_blank" rel="noopener">GitHub 仓库</a></li></ul></div>
+            </div>
+        </div>
+        <div class="footer-bottom"><span>&copy; 2026 GCMC.</span><span>与 Mojang Studios 无关</span></div>
+    </footer>
+
+    <!-- 确认弹窗 -->
+    <div class="auth-card" id="confirm-modal" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1000;max-width:380px;width:90%;text-align:center;">
+        <div class="auth-header"><h2 id="confirm-title">确认操作</h2></div>
+        <p id="confirm-message" style="margin-bottom:1.5rem;opacity:0.85;line-height:1.6;"></p>
+        <div style="display:flex;gap:0.75rem;">
+            <button class="auth-btn" id="confirm-ok-btn" style="flex:1;">确定</button>
+            <button class="auth-btn secondary" id="confirm-cancel-btn" style="flex:1;">取消</button>
+        </div>
+    </div>
+
+    <!-- 提示输入弹窗 -->
+    <div class="auth-card" id="prompt-modal" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1000;max-width:380px;width:90%;">
+        <div class="auth-header"><h2 id="prompt-title">请输入</h2></div>
+        <p id="prompt-message" style="margin-bottom:0.75rem;opacity:0.85;line-height:1.6;"></p>
+        <div class="form-group" style="margin-bottom:1rem;"><input type="text" id="prompt-input" placeholder=""></div>
+        <div class="form-error" id="prompt-error"></div>
+        <div style="display:flex;gap:0.75rem;">
+            <button class="auth-btn" id="prompt-ok-btn" style="flex:1;">确定</button>
+            <button class="auth-btn secondary" id="prompt-cancel-btn" style="flex:1;">取消</button>
+        </div>
+    </div>
+
+    <!-- 修改昵称弹层 -->
+    <div class="auth-card" id="nickname-panel" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1000;max-width:400px;width:90%;">
+        <div class="auth-header"><h2>修改昵称</h2></div>
+        <form id="nickname-form" class="auth-form">
+            <div class="form-group"><label for="edit-nickname">昵称</label><input type="text" id="edit-nickname" placeholder="输入新昵称" maxlength="20"></div>
+            <div class="form-error" id="nickname-error"></div>
+            <div style="display:flex;gap:0.75rem;">
+                <button type="submit" class="auth-btn" style="flex:1;">保存</button>
+                <button type="button" class="auth-btn secondary" id="cancel-nickname-btn" style="flex:1;">取消</button>
+            </div>
+        </form>
+    </div>
+    <div id="overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:999;"></div>
+
+    <!-- 头像修改弹层 -->
+    <div class="auth-card" id="avatar-panel" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1000;max-width:400px;width:90%;text-align:center;">
+        <div class="auth-header"><h2><i class="fas fa-camera"></i> 修改头像</h2></div>
+        <div id="avatar-preview" style="width:100px;height:100px;border-radius:50%;margin:0 auto 1rem;overflow:hidden;background:linear-gradient(135deg,#3498db,#2ecc71);display:flex;align-items:center;justify-content:center;font-size:2.5rem;font-weight:700;color:#fff;text-transform:uppercase;"></div>
+        <div class="form-group" style="margin-bottom:1rem;">
+            <label for="avatar-file-input" class="auth-btn secondary" style="cursor:pointer;width:100%;text-align:center;">选择图片</label>
+            <input type="file" id="avatar-file-input" accept="image/png,image/jpeg,image/gif,image/webp" style="display:none;">
+        </div>
+        <p style="font-size:0.75rem;opacity:0.6;margin-bottom:1rem;">支持 PNG/JPG/GIF/WebP，最大 2MB</p>
+        <div class="form-error" id="avatar-error"></div>
+        <div class="form-success" id="avatar-success"></div>
+        <div style="display:flex;gap:0.75rem;">
+            <button class="auth-btn" id="avatar-upload-btn" style="flex:1;" disabled>上传</button>
+            <button class="auth-btn secondary" id="avatar-delete-btn" style="flex:1;">恢复默认</button>
+            <button class="auth-btn secondary" id="cancel-avatar-btn" style="flex:1;">取消</button>
+        </div>
+    </div>
+
+    <!-- 邮箱验证弹层 -->
+    <div class="auth-card" id="email-verify-panel" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1000;max-width:400px;width:90%;">
+        <div class="auth-header"><h2>验证邮箱</h2></div>
+        <form id="email-verify-form" class="auth-form">
+            <div class="form-group"><label for="verify-code">验证码</label><input type="text" id="verify-code" placeholder="6 位验证码" required maxlength="6" inputmode="numeric"></div>
+            <div id="verify-hint" style="font-size:0.8rem;opacity:0.7;"></div>
+            <div class="form-error" id="verify-error"></div>
+            <div class="form-success" id="verify-success"></div>
+            <button type="submit" class="auth-btn success">验证</button>
+            <button type="button" class="auth-btn secondary" id="resend-code-btn">重发验证码</button>
+            <button type="button" class="auth-btn secondary" id="cancel-verify-btn">取消</button>
+        </form>
+    </div>
+
+    <!-- 修改邮箱弹层 -->
+    <div class="auth-card" id="email-change-panel" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1000;max-width:400px;width:90%;">
+        <div class="auth-header"><h2><i class="fas fa-envelope"></i> 修改邮箱</h2></div>
+        <form id="email-change-form" class="auth-form">
+            <div class="form-group"><label for="new-email">新邮箱</label><input type="email" id="new-email" placeholder="请输入新邮箱地址" required></div>
+            <div class="form-group"><label for="email-change-pwd">当前密码</label><input type="password" id="email-change-pwd" placeholder="请输入密码确认" required></div>
+            <div class="form-error" id="email-change-error"></div>
+            <div class="form-success" id="email-change-success"></div>
+            <div style="display:flex;gap:0.75rem;">
+                <button type="submit" class="auth-btn" style="flex:1;">保存</button>
+                <button type="button" class="auth-btn secondary" id="cancel-email-change-btn" style="flex:1;">取消</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- 游戏账号绑定弹层 -->
+    <div class="auth-card" id="game-bind-panel" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1000;max-width:360px;width:90%;">
+        <div class="auth-header"><h2 style="font-size:1rem;"><i class="fas fa-gamepad"></i> 绑定 Minecraft 账号</h2></div>
+        <div id="game-bind-step1">
+            <p style="font-size:0.78rem;opacity:0.7;margin-bottom:0.75rem;">通过游戏内验证码绑定，无需密码</p>
+            <form id="game-code-form" class="auth-form">
+                <div class="form-group"><label for="game-username">Minecraft 用户名</label><input type="text" id="game-username" placeholder="你在游戏内的名字" required></div>
+                <div class="form-error" id="game-verify-error"></div>
+                <button type="submit" class="auth-btn" id="game-code-btn">获取验证码</button>
+            </form>
+            <div style="margin-top:1rem;text-align:center;">
+                <button class="auth-btn secondary" id="game-pwd-btn" style="font-size:0.8rem;width:100%;">或使用密码验证（同机器）</button>
+            </div>
+            <div style="margin-top:0.5rem;text-align:center;">
+                <button type="button" class="auth-btn secondary" id="cancel-game-btn">取消</button>
+            </div>
+        </div>
+        <div id="game-bind-step2" style="display:none;text-align:center;padding:0.5rem 0;">
+            <div style="font-size:2rem;font-weight:700;letter-spacing:0.15em;margin:0.25rem 0;font-family:monospace;color:#3498db;" id="game-code-display">------</div>
+            <p style="font-weight:600;margin:0.5rem 0 0.25rem 0;font-size:0.85rem;">在游戏内输入以下指令：</p>
+            <div id="game-cmd-display"></div>
+            <p style="font-size:0.7rem;opacity:0.6;margin:0.25rem 0;">验证码有效期 <strong>5 分钟</strong>，请在游戏内输入后等待确认</p>
+            <p style="font-size:0.7rem;opacity:0.6;margin:0.25rem 0;">绑定成功后，此页面会自动刷新</p>
+            <div id="game-pending-status" style="margin-top:0.25rem;color:#f39c12;font-size:0.8rem;">等待输入验证码...</div>
+            <button class="auth-btn secondary" id="game-code-back-btn" style="margin-top:0.75rem;font-size:0.8rem;">取消</button>
+        </div>
+        <div id="game-bind-step3" style="display:none;text-align:center;padding:1rem 0;">
+            <div style="font-size:2.5rem;color:#2ecc71;margin-bottom:0.5rem;"><i class="fas fa-check-circle"></i></div>
+            <h3 style="margin:0 0 0.75rem 0;">绑定成功！</h3>
+            <p id="game-bind-result" style="margin:0 0 1rem 0;"></p>
+            <button class="auth-btn" id="game-bind-close">确认</button>
+        </div>
+        <div id="game-pwd-mode" style="display:none;">
+            <form id="game-verify-form" class="auth-form">
+                <div class="form-group"><label for="game-pwd-username">Minecraft 用户名</label><input type="text" id="game-pwd-username" placeholder="游戏内用户名" required></div>
+                <div class="form-group"><label for="game-password">游戏密码</label><input type="password" id="game-password" placeholder="CatSeedLogin 密码" required></div>
+                <p style="font-size:0.75rem;opacity:0.6;">密码仅用于验证，不会存储</p>
+                <div class="form-error" id="game-pwd-error"></div>
+                <button type="submit" class="auth-btn">验证并绑定</button>
+                <button type="button" class="auth-btn secondary" id="game-pwd-back-btn">返回</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 背包查看弹层（仅背包 + 快捷栏） -->
+    <div class="auth-card" id="inventory-panel" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1000;max-width:380px;width:95%;padding:1rem;box-sizing:border-box;">
+        <div class="auth-header" style="margin-bottom: 0.5rem;"><h2 style="font-size:1rem;margin:0;"><i class="fas fa-box"></i> 玩家背包 - <span id="inv-player-name">-</span></h2></div>
+        <div id="inv-loading" style="text-align:center;padding:1.5rem;"><p>加载中...</p></div>
+        <div id="inv-content" style="display:none;">
+            <div id="inv-stats" style="display:flex;gap:0.5rem;padding:0.4rem;margin-bottom:0.4rem;flex-wrap:wrap;font-size:0.75rem;"></div>
+            <div id="inv-main" style="display:grid;grid-template-columns:repeat(9,1fr);gap:4px;margin-bottom:6px;"></div>
+            <div id="inv-hotbar" style="display:grid;grid-template-columns:repeat(9,1fr);gap:4px;"></div>
+            <div style="text-align:center;margin-top:0.5rem;">
+                <button class="auth-btn secondary" id="close-inventory-btn" style="font-size:0.8rem;">关闭</button>
+            </div>
+        </div>
+        <div id="inv-error" style="display:none;text-align:center;padding:1.5rem;color:#e74c3c;"></div>
+    </div>
+
+    <!-- 物品详情弹窗 -->
+    <div id="item-detail-popup" style="display:none;">
+        <div class="item-detail-header">
+            <img id="item-detail-icon" src="" alt="" onerror="this.style.display='none'">
+            <div>
+                <div id="item-detail-name"></div>
+                <div id="item-detail-id"></div>
+            </div>
+        </div>
+        <div id="item-detail-stats"></div>
+        <div id="item-detail-enchants"></div>
+        <div id="item-detail-lore"></div>
+        <div id="item-detail-durability"></div>
+    </div>
+
+    <script type="module">
+        import { initTheme, bindThemeToggle } from './js/theme.js';
+        import { showToast } from './js/ui.js';
+        import { sha256 } from './js/crypto.js';
+        import {
+            isLoggedIn, fetchProfile, changePassword, deleteAccount, logout, updateProfile,
+            setup2FA, enable2FA, disable2FA, sendVerification, verifyEmail,
+            getSessions, revokeSession, getLoginHistory, getActivityLog,
+            adminFetchUsers, adminChangeRole, adminBanUser, adminUnbanUser, adminResetPassword, adminUnlockUser, adminDeleteUser,
+            adminCreateUser, adminSetEmailVerified, adminDisable2FA, adminSetPassword, adminGetUserInventoryBindings,
+            verifyGameAccount, bindGameAccount, unbindGameAccount, getGameBindings, generateVerifyCode,
+            changeEmail,
+            fetchSettings, updateSetting,
+            uploadAvatar, deleteAvatar, getInventory
+        } from './js/auth.js';
+
+        // 每日福利
+        import { getDailyRewardStatus, getDailyRewardAdmin, updateDailyRewardCommand } from './js/auth.js';
+
+        initTheme(); bindThemeToggle();
+        document.getElementById('hamburger-btn')?.addEventListener('click', () => document.body.classList.toggle('nav-open'));
+        document.getElementById('sidebar-avatar').addEventListener('click', openAvatar);
+        if (!isLoggedIn()) { window.location.href = '/login.html'; }
+
+        let currentUser = {};
+
+        // ===== 菜单导航 =====
+        function switchPage(page) {
+            document.querySelectorAll('.page-panel').forEach(p => p.style.display = 'none');
+            document.getElementById('page-' + page).style.display = '';
+            document.querySelectorAll('.profile-menu a').forEach(a => a.classList.remove('active'));
+            document.querySelector(`[data-page="${page}"]`).classList.add('active');
+
+            if (page === 'overview') loadOverview();
+            if (page === 'profile') loadProfileInfo();
+            if (page === 'security') load2FAStatus();
+            if (page === 'sessions') loadSessions();
+            if (page === 'logs') { loadLoginHistory(); loadActivityLog(); }
+            if (page === 'admin') loadAdminUsers();
+            if (page === 'settings') loadSettings();
+            if (page === 'mc') loadMcAccount();
+            if (page === 'daily') loadDailyReward();
+        }
+
+        document.querySelectorAll('.profile-menu a[data-page]').forEach(a => {
+            a.addEventListener('click', e => { e.preventDefault(); switchPage(a.dataset.page); });
+        });
+        document.getElementById('menu-logout').addEventListener('click', logout);
+
+        // ===== 侧栏用户卡片 =====
+        function updateSidebar(u) {
+            const avatarEl = document.getElementById('sidebar-avatar');
+            if (u.avatar_url) {
+                avatarEl.innerHTML = '';
+                avatarEl.style.backgroundImage = `url(${u.avatar_url})`;
+                avatarEl.style.backgroundSize = 'cover';
+                avatarEl.style.backgroundPosition = 'center';
+            } else {
+                avatarEl.style.backgroundImage = '';
+                avatarEl.style.backgroundSize = '';
+                avatarEl.style.backgroundPosition = '';
+                avatarEl.textContent = (u.username || '?').charAt(0).toUpperCase();
+            }
+            document.getElementById('sidebar-name').textContent = u.username;
+            const nnEl = document.getElementById('sidebar-nickname');
+            if (nnEl) nnEl.textContent = u.nickname || '';
+            document.getElementById('sidebar-id').textContent = '#' + u.id;
+            const roleBadge = document.getElementById('sidebar-role');
+            roleBadge.textContent = u.role === 'admin' ? '管理员' : '用户';
+            roleBadge.className = 'profile-role-badge ' + (u.role === 'admin' ? 'role-admin' : 'role-user');
+            document.getElementById('sidebar-status').innerHTML = statusBadge(u.status);
+
+            // Admin menu
+            if (u.role === 'admin') { document.getElementById('menu-admin').style.display = ''; document.getElementById('menu-settings').style.display = ''; }
+        }
+
+        function statusBadge(status) {
+            return status === 'banned'
+                ? '<span class="status-badge badge-banned">已封禁</span>'
+                : '<span class="status-badge badge-active">正常</span>';
+        }
+
+        // ===== 密码强度 =====
+        document.getElementById('cp-new')?.addEventListener('input', e => {
+            const pwd = e.target.value;
+            const bars = document.querySelectorAll('#cp-strength .strength-bar');
+            const hint = document.getElementById('cp-strength-hint');
+            let score = 0;
+            if (pwd.length >= 6) score++;
+            if (pwd.length >= 10) score++;
+            if (/[a-z]/.test(pwd) && /[A-Z]/.test(pwd)) score++;
+            if (/[0-9]/.test(pwd)) score++;
+            if (/[^a-zA-Z0-9]/.test(pwd)) score++;
+            const labels = ['', '很弱', '较弱', '一般', '较强', '非常强'];
+            const colors = ['', '#e74c3c', '#e74c3c', '#f39c12', '#2ecc71', '#27ae60'];
+            bars.forEach((bar, i) => { bar.className = 'strength-bar'; if (i < score) bar.classList.add('level-' + score); });
+            hint.textContent = pwd ? labels[score] : '';
+            hint.style.color = colors[score];
+        });
+
+        // ===== 加载用户数据 =====
+        async function loadUser() {
+            try {
+                currentUser = await fetchProfile();
+                updateSidebar(currentUser);
+                loadOverview();
+            } catch (err) {
+                // authFetch 已处理跳转；不要再次 logout 触发递归
+                console.warn('[profile] loadUser failed:', err.message);
+            }
+        }
+        loadUser();
+
+        // ===== 账号概览 =====
+        async function loadOverview() {
+            if (!currentUser.id) return;
+            const u = currentUser;
+
+            // 安全评分
+            let score = 0;
+            const items = [];
+            if (u.totp_enabled) { score += 35; items.push({ done: true, text: '两步验证已开启' }); }
+            else { items.push({ done: false, text: '未开启两步验证' }); }
+            if (u.email_verified) { score += 35; items.push({ done: true, text: '邮箱已验证' }); }
+            else { items.push({ done: false, text: '邮箱未验证' }); }
+            score += 30; // password always set
+            items.push({ done: true, text: '密码已设置' });
+
+            document.getElementById('score-text').textContent = score;
+            const circumference = 2 * Math.PI * 34;
+            const offset = circumference - (score / 100) * circumference;
+            document.getElementById('score-ring').setAttribute('stroke-dashoffset', offset);
+            const ringColor = score >= 80 ? '#2ecc71' : score >= 50 ? '#f39c12' : '#e74c3c';
+            document.getElementById('score-ring').setAttribute('stroke', ringColor);
+            document.getElementById('score-text').style.color = ringColor;
+            document.getElementById('security-checklist').innerHTML = items.map(i =>
+                `<div class="sd-item ${i.done ? 'done' : 'todo'}"><i class="fas ${i.done ? 'fa-check-circle' : 'fa-circle'}"></i> ${i.text}</div>`
+            ).join('');
+            document.getElementById('ov-2fa').textContent = score + '分';
+            document.getElementById('ov-2fa').style.color = ringColor;
+
+            // 会话数
+            try {
+                const sd = await getSessions();
+                document.getElementById('ov-sessions').textContent = sd.sessions.length;
+            } catch { document.getElementById('ov-sessions').textContent = '-'; }
+
+            // 登录次数
+            try {
+                const hd = await getLoginHistory();
+                document.getElementById('ov-logins').textContent = hd.logs.length;
+            } catch { document.getElementById('ov-logins').textContent = '-'; }
+
+            // 注册天数
+            if (u.created_at) {
+                const created = new Date(u.created_at);
+                const days = Math.floor((Date.now() - created) / 86400000);
+                document.getElementById('ov-days').textContent = Math.max(1, days);
+            }
+
+            // 绑定
+            document.getElementById('bind-email').textContent = u.email;
+            document.getElementById('bind-email-badge').innerHTML = u.email_verified
+                ? '<span class="badge-verified">已验证</span>'
+                : '<span class="badge-unverified" style="cursor:pointer;" id="bind-verify-link">未验证 →</span>';
+            document.getElementById('bind-2fa-badge').innerHTML = u.totp_enabled
+                ? '<span class="badge-verified" style="cursor:pointer;" id="bind-2fa-link">已启用</span>'
+                : '<span class="badge-unverified" style="cursor:pointer;" id="bind-2fa-link">未启用 →</span>';
+
+            document.getElementById('bind-verify-link')?.addEventListener('click', () => openEmailVerify());
+            document.getElementById('bind-2fa-link')?.addEventListener('click', () => switchPage('security'));
+            loadGameBindings();
+
+        }
+
+        // ===== 个人资料页 =====
+        function loadProfileInfo() {
+            const u = currentUser;
+            document.getElementById('pi-username').textContent = u.username;
+            document.getElementById('pi-nickname').innerHTML = (u.nickname || '未设置') + ' <button class="auth-btn secondary" id="pi-edit-btn" style="font-size:0.75rem;padding:0.3rem 0.7rem;">编辑</button>';
+            document.getElementById('pi-email').innerHTML = u.email + ' ' + (u.email_verified ? '<span class="badge-verified">已验证</span>' : '<span class="badge-unverified" style="cursor:pointer;" id="pi-verify-link">未验证</span>') + ' <button class="auth-btn secondary" id="pi-email-edit-btn" style="font-size:0.75rem;padding:0.3rem 0.7rem;">修改</button>';
+            document.getElementById('pi-role').textContent = u.role === 'admin' ? '管理员' : '普通用户';
+            document.getElementById('pi-status').innerHTML = statusBadge(u.status);
+            document.getElementById('pi-created').textContent = u.created_at;
+
+            // 头像
+            const avatarImg = document.getElementById('pi-avatar-img');
+            if (u.avatar_url) {
+                avatarImg.innerHTML = `<img src="${u.avatar_url}" style="width:100%;height:100%;object-fit:cover;">`;
+            } else {
+                avatarImg.innerHTML = '';
+                avatarImg.textContent = (u.username || '?').charAt(0).toUpperCase();
+            }
+
+            document.getElementById('pi-edit-btn')?.addEventListener('click', openNickname);
+            document.getElementById('pi-verify-link')?.addEventListener('click', openEmailVerify);
+            document.getElementById('pi-email-edit-btn')?.addEventListener('click', openChangeEmail);
+            document.getElementById('pi-avatar-btn')?.addEventListener('click', openAvatar);
+            loadGameBindings();
+        }
+
+        // 刷新个人资料页头像（无副作用，仅更新 DOM）
+        function refreshProfileAvatar() {
+            const avatarImg = document.getElementById('pi-avatar-img');
+            if (!avatarImg) return;
+            const u = currentUser;
+            if (u.avatar_url) {
+                avatarImg.innerHTML = `<img src="${u.avatar_url}" style="width:100%;height:100%;object-fit:cover;">`;
+            } else {
+                avatarImg.innerHTML = '';
+                avatarImg.textContent = (u.username || '?').charAt(0).toUpperCase();
+            }
+        }
+
+        // ===== 弹层管理 =====
+        function showOverlay() { document.getElementById('overlay').style.display = ''; }
+        function hideOverlay() { document.getElementById('overlay').style.display = 'none'; }
+        function closeAllModals() {
+            // 取消活跃的弹窗 Promise
+            if (activeModalResolver) { activeModalResolver(null); activeModalResolver = null; }
+            hideOverlay();
+            ['nickname-panel','email-verify-panel','email-change-panel','game-bind-panel','avatar-panel','inventory-panel','create-user-panel','admin-set-password-panel','confirm-modal','prompt-modal','item-detail-popup'].forEach(id => {
+                document.getElementById(id).style.display = 'none';
+            });
+        }
+
+        // ===== 通用确认弹窗（替代 confirm） =====
+        let activeModalResolver = null;
+        function showConfirm(title, message, danger = false) {
+            // 先取消上一个挂起的弹窗
+            if (activeModalResolver) { activeModalResolver(false); activeModalResolver = null; }
+            return new Promise(resolve => {
+                activeModalResolver = resolve;
+                showOverlay();
+                const modal = document.getElementById('confirm-modal');
+                document.getElementById('confirm-title').textContent = title;
+                document.getElementById('confirm-message').textContent = message;
+                const okBtn = document.getElementById('confirm-ok-btn');
+                okBtn.className = danger ? 'auth-btn danger' : 'auth-btn';
+                modal.style.display = '';
+
+                function cleanup(result) {
+                    modal.style.display = 'none';
+                    hideOverlay();
+                    activeModalResolver = null;
+                    resolve(result);
+                }
+                document.getElementById('confirm-ok-btn').onclick = () => cleanup(true);
+                document.getElementById('confirm-cancel-btn').onclick = () => cleanup(false);
+            });
+        }
+
+        // ===== 通用输入弹窗（替代 prompt） =====
+        function showPrompt(title, message, defaultValue = '') {
+            // 先取消上一个挂起的弹窗
+            if (activeModalResolver) { activeModalResolver(null); activeModalResolver = null; }
+            return new Promise(resolve => {
+                activeModalResolver = resolve;
+                showOverlay();
+                const modal = document.getElementById('prompt-modal');
+                document.getElementById('prompt-title').textContent = title;
+                document.getElementById('prompt-message').textContent = message;
+                const input = document.getElementById('prompt-input');
+                input.value = defaultValue;
+                document.getElementById('prompt-error').textContent = '';
+                modal.style.display = '';
+                input.focus();
+
+                function cleanup(result) {
+                    modal.style.display = 'none';
+                    hideOverlay();
+                    activeModalResolver = null;
+                    resolve(result);
+                }
+                document.getElementById('prompt-ok-btn').onclick = () => {
+                    const val = input.value.trim();
+                    if (!val) {
+                        document.getElementById('prompt-error').textContent = '请输入内容';
+                        return;
+                    }
+                    cleanup(val);
+                };
+                document.getElementById('prompt-cancel-btn').onclick = () => cleanup(null);
+                input.addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('prompt-ok-btn').click(); });
+            });
+        }
+
+        // 修改昵称
+        function openNickname() {
+            showOverlay();
+            document.getElementById('nickname-panel').style.display = '';
+            document.getElementById('edit-nickname').value = currentUser.nickname || '';
+            document.getElementById('nickname-error').textContent = '';
+        }
+        document.getElementById('edit-nickname-btn')?.addEventListener('click', openNickname);
+        document.getElementById('cancel-nickname-btn').addEventListener('click', closeAllModals);
+        document.getElementById('overlay').addEventListener('click', closeAllModals);
+        document.getElementById('nickname-form').addEventListener('submit', async e => {
+            e.preventDefault();
+            const n = document.getElementById('edit-nickname').value.trim();
+            const errEl = document.getElementById('nickname-error');
+            errEl.textContent = '';
+            try {
+                await updateProfile(n);
+                showToast('昵称已更新');
+                currentUser.nickname = n;
+                updateSidebar(currentUser);
+                closeAllModals();
+                if (document.getElementById('page-profile').style.display !== 'none') loadProfileInfo();
+            } catch (err) { errEl.textContent = err.message; }
+        });
+
+        // ===== 头像修改 =====
+        let avatarFile = null;
+        function openAvatar() {
+            showOverlay();
+            const panel = document.getElementById('avatar-panel');
+            panel.style.display = '';
+            document.getElementById('avatar-error').textContent = '';
+            document.getElementById('avatar-success').textContent = '';
+            document.getElementById('avatar-upload-btn').disabled = true;
+            avatarFile = null;
+
+            // 预览当前头像
+            const preview = document.getElementById('avatar-preview');
+            if (currentUser.avatar_url) {
+                preview.innerHTML = `<img src="${currentUser.avatar_url}" style="width:100%;height:100%;object-fit:cover;">`;
+            } else {
+                preview.innerHTML = '';
+                preview.textContent = (currentUser.username || '?').charAt(0).toUpperCase();
+            }
+        }
+        document.getElementById('cancel-avatar-btn').addEventListener('click', closeAllModals);
+
+        document.getElementById('avatar-file-input').addEventListener('change', e => {
+            const file = e.target.files[0];
+            if (!file) return;
+            if (file.size > 2 * 1024 * 1024) {
+                document.getElementById('avatar-error').textContent = '文件大小不能超过 2MB';
+                return;
+            }
+            avatarFile = file;
+            document.getElementById('avatar-upload-btn').disabled = false;
+            document.getElementById('avatar-error').textContent = '';
+            // 预览
+            const reader = new FileReader();
+            reader.onload = ev => {
+                document.getElementById('avatar-preview').innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;">`;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        document.getElementById('avatar-upload-btn').addEventListener('click', async () => {
+            if (!avatarFile) return;
+            const errEl = document.getElementById('avatar-error');
+            const sucEl = document.getElementById('avatar-success');
+            errEl.textContent = ''; sucEl.textContent = '';
+            const btn = document.getElementById('avatar-upload-btn');
+            btn.disabled = true; btn.textContent = '上传中...';
+            try {
+                const data = await uploadAvatar(avatarFile);
+                sucEl.textContent = '头像上传成功！';
+                currentUser.avatar_url = data.avatar_url;
+                updateSidebar(currentUser);
+                refreshProfileAvatar();
+                setTimeout(() => closeAllModals(), 800);
+            } catch (err) { errEl.textContent = err.message; }
+            finally { btn.disabled = false; btn.textContent = '上传'; }
+        });
+
+        document.getElementById('avatar-delete-btn').addEventListener('click', async () => {
+            if (!await showConfirm('删除头像', '确定恢复默认头像？')) return;
+            const errEl = document.getElementById('avatar-error');
+            const sucEl = document.getElementById('avatar-success');
+            errEl.textContent = ''; sucEl.textContent = '';
+            try {
+                await deleteAvatar();
+                sucEl.textContent = '已恢复默认头像';
+                currentUser.avatar_url = '';
+                updateSidebar(currentUser);
+                refreshProfileAvatar();
+                setTimeout(() => closeAllModals(), 800);
+            } catch (err) { errEl.textContent = err.message; }
+        });
+
+        // ===== 修改邮箱 =====
+        function openChangeEmail() {
+            showOverlay();
+            document.getElementById('email-change-panel').style.display = '';
+            document.getElementById('new-email').value = currentUser.email || '';
+            document.getElementById('email-change-pwd').value = '';
+            document.getElementById('email-change-error').textContent = '';
+            document.getElementById('email-change-success').textContent = '';
+        }
+        document.getElementById('cancel-email-change-btn').addEventListener('click', closeAllModals);
+        document.getElementById('email-change-form').addEventListener('submit', async e => {
+            e.preventDefault();
+            const newEmail = document.getElementById('new-email').value.trim();
+            const password = document.getElementById('email-change-pwd').value;
+            const errEl = document.getElementById('email-change-error');
+            const sucEl = document.getElementById('email-change-success');
+            errEl.textContent = ''; sucEl.textContent = '';
+            if (!newEmail) { errEl.textContent = '请输入新邮箱'; return; }
+            if (!password) { errEl.textContent = '请输入当前密码'; return; }
+            try {
+                await changeEmail(newEmail, password);
+                sucEl.textContent = '邮箱修改成功，需重新验证';
+                currentUser.email = newEmail;
+                currentUser.email_verified = false;
+                updateSidebar(currentUser);
+                // 刷新当前显示
+                document.getElementById('pi-email').innerHTML = newEmail + ' <span class="badge-unverified" style="cursor:pointer;" id="pi-verify-link">未验证</span> <button class="auth-btn secondary" id="pi-email-edit-btn" style="font-size:0.75rem;padding:0.3rem 0.7rem;">修改</button>';
+                document.getElementById('pi-verify-link')?.addEventListener('click', openEmailVerify);
+                document.getElementById('pi-email-edit-btn')?.addEventListener('click', openChangeEmail);
+                setTimeout(() => closeAllModals(), 1500);
+            } catch (err) { errEl.textContent = err.message; }
+        });
+
+        // 邮箱验证
+        function openEmailVerify() {
+            showOverlay();
+            document.getElementById('email-verify-panel').style.display = '';
+            document.getElementById('verify-error').textContent = '';
+            document.getElementById('verify-success').textContent = '';
+            sendVerification().then(d => {
+                document.getElementById('verify-hint').textContent = '验证码: ' + d.verificationHint + '（有效期10分钟）';
+            }).catch(err => { document.getElementById('verify-error').textContent = err.message; });
+        }
+        document.getElementById('resend-code-btn').addEventListener('click', () => {
+            document.getElementById('verify-error').textContent = '';
+            sendVerification().then(d => {
+                document.getElementById('verify-hint').textContent = '验证码: ' + d.verificationHint + '（有效期10分钟）';
+            }).catch(err => { document.getElementById('verify-error').textContent = err.message; });
+        });
+        document.getElementById('cancel-verify-btn').addEventListener('click', closeAllModals);
+        document.getElementById('email-verify-form').addEventListener('submit', async e => {
+            e.preventDefault();
+            const code = document.getElementById('verify-code').value.trim();
+            const errEl = document.getElementById('verify-error');
+            const sucEl = document.getElementById('verify-success');
+            errEl.textContent = ''; sucEl.textContent = '';
+            try {
+                await verifyEmail(code);
+                sucEl.textContent = '邮箱验证成功！';
+                currentUser.email_verified = 1;
+                setTimeout(() => { closeAllModals(); loadOverview(); }, 800);
+            } catch (err) { errEl.textContent = err.message; }
+        });
+
+        // ===== 游戏账号绑定 =====
+        let gamePollTimer = null;
+        function showGameStep(n) {
+            ['game-code-form','game-code-btn','game-pwd-btn','cancel-game-btn'].forEach(id => {
+                const el = document.getElementById(id); if (el) el.closest ? null : null;
+            });
+            document.getElementById('game-bind-step1').style.display = n === 1 ? '' : 'none';
+            document.getElementById('game-bind-step2').style.display = n === 2 ? '' : 'none';
+            document.getElementById('game-bind-step3').style.display = n === 3 ? '' : 'none';
+            document.getElementById('game-pwd-mode').style.display = n === 'pwd' ? '' : 'none';
+            if (n !== 2) { if (gamePollTimer) clearInterval(gamePollTimer); gamePollTimer = null; }
+        }
+        function openGameBind() { showOverlay(); document.getElementById('game-bind-panel').style.display = ''; showGameStep(1); document.getElementById('game-verify-error').textContent = ''; }
+        document.getElementById('cancel-game-btn').addEventListener('click', closeAllModals);
+        document.getElementById('game-code-back-btn').addEventListener('click', () => { if (gamePollTimer) clearInterval(gamePollTimer); showGameStep(1); });
+        document.getElementById('game-bind-close').addEventListener('click', () => { closeAllModals(); loadOverview(); });
+        document.getElementById('game-pwd-btn').addEventListener('click', () => {
+            const un = document.getElementById('game-username').value.trim();
+            document.getElementById('game-pwd-username').value = un || '';
+            document.getElementById('game-pwd-error').textContent = '';
+            showGameStep('pwd');
+        });
+        document.getElementById('game-pwd-back-btn').addEventListener('click', () => showGameStep(1));
+
+        // 验证码模式：获取验证码
+        document.getElementById('game-code-form').addEventListener('submit', async e => {
+            e.preventDefault();
+            const username = document.getElementById('game-username').value.trim();
+            const errEl = document.getElementById('game-verify-error');
+            const btn = document.getElementById('game-code-btn');
+            errEl.textContent = '';
+            btn.disabled = true; btn.textContent = '正在生成...';
+            try {
+                const data = await generateVerifyCode(username);
+                document.getElementById('game-code-display').textContent = data.code;
+                document.getElementById('game-cmd-display').innerHTML = (data.commands || [data.command]).map(c =>
+                    `<div style="background:rgba(52,152,219,0.1);padding:0.3rem 0.6rem;border-radius:0.4rem;font-family:monospace;font-size:0.85rem;margin:0.15rem 0;">${c}</div>`
+                ).join('');
+                showGameStep(2);
+
+                // 轮询检查绑定状态（每 3 秒检查一次）
+                let attempts = 0;
+                const maxAttempts = 100; // 5 分钟 / 3 秒 = 100 次
+                gamePollTimer = setInterval(async () => {
+                    attempts++;
+                    if (attempts > maxAttempts) {
+                        clearInterval(gamePollTimer);
+                        document.getElementById('game-pending-status').innerHTML = '<span style="color:#e74c3c;">验证码已过期，请重新获取</span>';
+                        return;
+                    }
+                    try {
+                        const bindings = await getGameBindings();
+                        if (bindings.bindings.some(b => b.game_username.toLowerCase() === username.toLowerCase())) {
+                            clearInterval(gamePollTimer);
+                            gamePollTimer = null;
+                            showGameStep(3);
+                            document.getElementById('game-bind-result').textContent = '已绑定: ' + username;
+                        }
+                    } catch { /* 忽略轮询错误 */ }
+                }, 3000);
+            } catch (err) { errEl.textContent = err.message; }
+            finally { btn.disabled = false; btn.textContent = '获取验证码'; }
+        });
+
+        // 密码模式
+        document.getElementById('game-verify-form').addEventListener('submit', async e => {
+            e.preventDefault();
+            const username = document.getElementById('game-pwd-username').value.trim();
+            const password = document.getElementById('game-password').value;
+            const errEl = document.getElementById('game-pwd-error');
+            errEl.textContent = '';
+            try {
+                const hashedPwd = await sha256(password);
+                await verifyGameAccount(username, hashedPwd);
+                await bindGameAccount(username);
+                showGameStep(3);
+                document.getElementById('game-bind-result').textContent = '已绑定: ' + username;
+            } catch (err) { errEl.textContent = err.message; }
+        });
+
+        async function loadGameBindings() {
+            try {
+                const data = await getGameBindings();
+                const piGameEl = document.getElementById('pi-game');
+                if (data.bindings && data.bindings.length > 0) {
+                    const names = data.bindings.map(b => b.game_username).join(', ');
+                    if (piGameEl) piGameEl.innerHTML = names;
+                } else {
+                    if (piGameEl) piGameEl.innerHTML = '未绑定';
+                }
+            } catch { /* ignore */ }
+        }
+
+        window.unbindGame = async function(gameUsername) {
+            if (!await showConfirm('解绑确认', `确定解绑 Minecraft 账号 ${gameUsername}？`)) return;
+            try { await unbindGameAccount(gameUsername); showToast('已解绑 ' + gameUsername); loadOverview(); } catch (err) { showToast(err.message, { type: 'error' }); }
+        };
+
+        // ===== 背包查看 =====
+
+        // 物品图标 CDN（本地缓存代理）
+        const ITEM_ICON_BASE = '/api/inventory/item-icon/';
+
+        // 附魔中文名映射
+        const enchantNames = {
+            'minecraft:protection': '保护', 'minecraft:fire_protection': '火焰保护',
+            'minecraft:feather_falling': '摔落保护', 'minecraft:blast_protection': '爆炸保护',
+            'minecraft:projectile_protection': '弹射物保护', 'minecraft:respiration': '水下呼吸',
+            'minecraft:aqua_affinity': '水下速掘', 'minecraft:thorns': '荆棘',
+            'minecraft:depth_strider': '深海探索者', 'minecraft:frost_walker': '冰霜行者',
+            'minecraft:soul_speed': '灵魂疾行', 'minecraft:swift_sneak': '迅捷潜行',
+            'minecraft:sharpness': '锋利', 'minecraft:smite': '亡灵杀手',
+            'minecraft:bane_of_arthropods': '节肢杀手', 'minecraft:knockback': '击退',
+            'minecraft:fire_aspect': '火焰附加', 'minecraft:looting': '抢夺',
+            'minecraft:sweeping_edge': '横扫之刃', 'minecraft:efficiency': '效率',
+            'minecraft:silk_touch': '精准采集', 'minecraft:fortune': '时运',
+            'minecraft:power': '力量', 'minecraft:punch': '冲击', 'minecraft:flame': '火矢',
+            'minecraft:infinity': '无限', 'minecraft:luck_of_the_sea': '海之眷顾',
+            'minecraft:lure': '饵钓', 'minecraft:loyalty': '忠诚', 'minecraft:impaling': '穿刺',
+            'minecraft:riptide': '激流', 'minecraft:channeling': '引雷',
+            'minecraft:multishot': '多重射击', 'minecraft:piercing': '穿透',
+            'minecraft:quick_charge': '快速装填', 'minecraft:unbreaking': '耐久',
+            'minecraft:mending': '经验修补', 'minecraft:vanishing_curse': '消失诅咒',
+            'minecraft:binding_curse': '绑定诅咒', 'minecraft:density': '密度',
+            'minecraft:breach': '破甲', 'minecraft:wind_burst': '风爆',
+        };
+
+        // 物品中文译名映射（覆盖常见 200+ 物品，未匹配的回退为 id 首字母大写）
+        const itemNames = {
+            'minecraft:diamond': '钻石', 'minecraft:diamond_block': '钻石块', 'minecraft:diamond_ore': '钻石矿石',
+            'minecraft:deepslate_diamond_ore': '深板岩钻石矿石', 'minecraft:netherite_ingot': '下界合金锭', 'minecraft:netherite_block': '下界合金块',
+            'minecraft:netherite_scrap': '下界合金碎片', 'minecraft:ancient_debris': '远古残骸', 'minecraft:netherite_sword': '下界合金剑',
+            'minecraft:netherite_pickaxe': '下界合金镐', 'minecraft:netherite_axe': '下界合金斧', 'minecraft:netherite_shovel': '下界合金锹',
+            'minecraft:netherite_hoe': '下界合金锄', 'minecraft:netherite_helmet': '下界合金头盔', 'minecraft:netherite_chestplate': '下界合金胸甲',
+            'minecraft:netherite_leggings': '下界合金护腿', 'minecraft:netherite_boots': '下界合金靴子',
+            'minecraft:diamond_sword': '钻石剑', 'minecraft:diamond_pickaxe': '钻石镐', 'minecraft:diamond_axe': '钻石斧',
+            'minecraft:diamond_shovel': '钻石锹', 'minecraft:diamond_hoe': '钻石锄', 'minecraft:diamond_helmet': '钻石头盔',
+            'minecraft:diamond_chestplate': '钻石胸甲', 'minecraft:diamond_leggings': '钻石护腿', 'minecraft:diamond_boots': '钻石靴子',
+            'minecraft:iron_ingot': '铁锭', 'minecraft:iron_block': '铁块', 'minecraft:iron_ore': '铁矿石',
+            'minecraft:iron_sword': '铁剑', 'minecraft:iron_pickaxe': '铁镐', 'minecraft:iron_axe': '铁斧',
+            'minecraft:iron_helmet': '铁头盔', 'minecraft:iron_chestplate': '铁胸甲', 'minecraft:iron_leggings': '铁护腿', 'minecraft:iron_boots': '铁靴子',
+            'minecraft:gold_ingot': '金锭', 'minecraft:gold_block': '金块', 'minecraft:gold_ore': '金矿石',
+            'minecraft:golden_apple': '金苹果', 'minecraft:enchanted_golden_apple': '附魔金苹果',
+            'minecraft:gold_nugget': '金粒', 'minecraft:raw_gold': '粗金', 'minecraft:raw_iron': '粗铁', 'minecraft:raw_copper': '粗铜',
+            'minecraft:copper_ingot': '铜锭', 'minecraft:copper_block': '铜块', 'minecraft:copper_ore': '铜矿石',
+            'minecraft:emerald': '绿宝石', 'minecraft:emerald_block': '绿宝石块', 'minecraft:emerald_ore': '绿宝石矿石',
+            'minecraft:lapis_lazuli': '青金石', 'minecraft:lapis_block': '青金石块', 'minecraft:lapis_ore': '青金石矿石',
+            'minecraft:redstone': '红石', 'minecraft:redstone_block': '红石块', 'minecraft:redstone_ore': '红石矿石',
+            'minecraft:quartz': '下界石英', 'minecraft:quartz_block': '石英块', 'minecraft:nether_quartz_ore': '下界石英矿石',
+            'minecraft:amethyst_shard': '紫水晶碎片', 'minecraft:amethyst_block': '紫水晶块', 'minecraft:amethyst_cluster': '紫水晶簇',
+            'minecraft:coal': '煤炭', 'minecraft:coal_block': '煤块', 'minecraft:coal_ore': '煤矿石',
+            'minecraft:charcoal': '木炭', 'minecraft:flint': '燧石', 'minecraft:gravel': '沙砾', 'minecraft:sand': '沙子',
+            'minecraft:dirt': '泥土', 'minecraft:grass_block': '草方块', 'minecraft:stone': '石头',
+            'minecraft:cobblestone': '圆石', 'minecraft:deepslate': '深板岩', 'minecraft:cobbled_deepslate': '深板岩圆石',
+            'minecraft:granite': '花岗岩', 'minecraft:diorite': '闪长岩', 'minecraft:andesite': '安山岩', 'minecraft:calcite': '方解石',
+            'minecraft:tuff': '凝灰岩', 'minecraft:dripstone_block': '滴水石块', 'minecraft:pointed_dripstone': '滴水石锥',
+            'minecraft:oak_log': '橡木原木', 'minecraft:spruce_log': '云杉原木', 'minecraft:birch_log': '白桦原木',
+            'minecraft:jungle_log': '丛林原木', 'minecraft:acacia_log': '金合欢原木', 'minecraft:dark_oak_log': '深色橡木原木',
+            'minecraft:mangrove_log': '红树原木', 'minecraft:cherry_log': '樱花原木',
+            'minecraft:oak_planks': '橡木木板', 'minecraft:spruce_planks': '云杉木板', 'minecraft:birch_planks': '白桦木板',
+            'minecraft:stick': '木棍', 'minecraft:string': '线', 'minecraft:leather': '皮革', 'minecraft:feather': '羽毛',
+            'minecraft:flint_and_steel': '打火石', 'minecraft:shears': '剪刀', 'minecraft:bucket': '铁桶',
+            'minecraft:water_bucket': '水桶', 'minecraft:lava_bucket': '岩浆桶', 'minecraft:milk_bucket': '奶桶',
+            'minecraft:compass': '指南针', 'minecraft:clock': '时钟', 'minecraft:spyglass': '望远镜',
+            'minecraft:recovery_compass': '追溯指针', 'minecraft:lead': '拴绳', 'minecraft:name_tag': '命名牌',
+            'minecraft:saddle': '鞍', 'minecraft:carrot_on_a_stick': '胡萝卜钓竿', 'minecraft:warped_fungus_on_a_stick': '诡异真菌钓竿',
+            'minecraft:enchanting_table': '附魔台', 'minecraft:anvil': '铁砧', 'minecraft:enchanted_book': '附魔书',
+            'minecraft:experience_bottle': '附魔之瓶', 'minecraft:bookshelf': '书架', 'minecraft:brewing_stand': '酿造台',
+            'minecraft:cauldron': '炼药锅', 'minecraft:ender_chest': '末影箱', 'minecraft:shulker_box': '潜影盒',
+            'minecraft:white_shulker_box': '白色潜影盒', 'minecraft:orange_shulker_box': '橙色潜影盒', 'minecraft:magenta_shulker_box': '品红色潜影盒',
+            'minecraft:light_blue_shulker_box': '淡蓝色潜影盒', 'minecraft:yellow_shulker_box': '黄色潜影盒', 'minecraft:lime_shulker_box': '黄绿色潜影盒',
+            'minecraft:pink_shulker_box': '粉色潜影盒', 'minecraft:gray_shulker_box': '灰色潜影盒', 'minecraft:light_gray_shulker_box': '淡灰色潜影盒',
+            'minecraft:cyan_shulker_box': '青色潜影盒', 'minecraft:purple_shulker_box': '紫色潜影盒', 'minecraft:blue_shulker_box': '蓝色潜影盒',
+            'minecraft:brown_shulker_box': '棕色潜影盒', 'minecraft:green_shulker_box': '绿色潜影盒', 'minecraft:red_shulker_box': '红色潜影盒',
+            'minecraft:black_shulker_box': '黑色潜影盒', 'minecraft:bundle': '收纳袋',
+            'minecraft:ender_pearl': '末影珍珠', 'minecraft:eye_of_ender': '末影之眼', 'minecraft:blaze_rod': '烈焰棒', 'minecraft:blaze_powder': '烈焰粉',
+            'minecraft:ghast_tear': '恶魂之泪', 'minecraft:magma_cream': '岩浆膏', 'minecraft:slime_ball': '黏液球', 'minecraft:slime_block': '黏液块',
+            'minecraft:phantom_membrane': '幻翼膜', 'minecraft:rabbit_foot': '兔子脚', 'minecraft:rabbit_hide': '兔子皮',
+            'minecraft:leather_horse_armor': '皮革马铠', 'minecraft:iron_horse_armor': '铁马铠', 'minecraft:golden_horse_armor': '金马铠', 'minecraft:diamond_horse_armor': '钻石马铠',
+            'minecraft:totem_of_undying': '不死图腾', 'minecraft:trident': '三叉戟', 'minecraft:elytra': '鞘翅',
+            'minecraft:firework_rocket': '烟花火箭', 'minecraft:firework_star': '烟火之星', 'minecraft:end_crystal': '末影水晶',
+            'minecraft:beacon': '信标', 'minecraft:conduit': '潮涌核心', 'minecraft:respawn_anchor': '重生锚',
+            'minecraft:sculk_sensor': '幽匿感测体', 'minecraft:sculk_shrieker': '幽匿尖啸体', 'minecraft:sculk_catalyst': '幽匿催发体',
+            'minecraft:echo_shard': '回响碎片', 'minecraft:disc_fragment_5': '唱片残片',
+            'minecraft:music_disc_13': '音乐唱片 13', 'minecraft:music_disc_cat': '音乐唱片 Cat', 'minecraft:music_disc_blocks': '音乐唱片 Blocks',
+            'minecraft:music_disc_chirp': '音乐唱片 Chirp', 'minecraft:music_disc_far': '音乐唱片 Far', 'minecraft:music_disc_mall': '音乐唱片 Mall',
+            'minecraft:music_disc_mellohi': '音乐唱片 Mellohi', 'minecraft:music_disc_stal': '音乐唱片 Stal', 'minecraft:music_disc_strad': '音乐唱片 Strad',
+            'minecraft:music_disc_ward': '音乐唱片 Ward', 'minecraft:music_disc_11': '音乐唱片 11', 'minecraft:music_disc_wait': '音乐唱片 Wait',
+            'minecraft:music_disc_otherside': '音乐唱片 Otherside', 'minecraft:music_disc_5': '音乐唱片 5', 'minecraft:music_disc_pigstep': '音乐唱片 Pigstep',
+            'minecraft:music_disc_relic': '音乐唱片 Relic',
+            'minecraft:apple': '苹果', 'minecraft:bread': '面包', 'minecraft:wheat': '小麦', 'minecraft:wheat_seeds': '小麦种子',
+            'minecraft:carrot': '胡萝卜', 'minecraft:potato': '马铃薯', 'minecraft:poisonous_potato': '毒马铃薯', 'minecraft:baked_potato': '烤马铃薯',
+            'minecraft:beetroot': '甜菜根', 'minecraft:beetroot_seeds': '甜菜种子', 'minecraft:beetroot_soup': '甜菜汤',
+            'minecraft:melon': '西瓜', 'minecraft:melon_slice': '西瓜片', 'minecraft:glistering_melon': '闪烁的西瓜',
+            'minecraft:pumpkin': '南瓜', 'minecraft:pumpkin_pie': '南瓜派', 'minecraft:pumpkin_seeds': '南瓜种子',
+            'minecraft:sugar_cane': '甘蔗', 'minecraft:sugar': '糖', 'minecraft:cocoa_beans': '可可豆', 'minecraft:cookie': '曲奇',
+            'minecraft:cake': '蛋糕', 'minecraft:egg': '鸡蛋', 'minecraft:chicken': '生鸡肉', 'minecraft:cooked_chicken': '熟鸡肉',
+            'minecraft:beef': '生牛肉', 'minecraft:cooked_beef': '牛排', 'minecraft:porkchop': '生猪排', 'minecraft:cooked_porkchop': '熟猪排',
+            'minecraft:mutton': '生羊肉', 'minecraft:cooked_mutton': '熟羊肉', 'minecraft:rabbit': '生兔肉', 'minecraft:cooked_rabbit': '熟兔肉',
+            'minecraft:cod': '生鳕鱼', 'minecraft:cooked_cod': '熟鳕鱼', 'minecraft:salmon': '生鲑鱼', 'minecraft:cooked_salmon': '熟鲑鱼',
+            'minecraft:tropical_fish': '热带鱼', 'minecraft:pufferfish': '河豚', 'minecraft:dried_kelp': '干海带',
+            'minecraft:sea_pickle': '海泡菜', 'minecraft:kelp': '海带', 'minecraft:dried_ghast': '干恶魂', 'minecraft:phantom_membrane': '幻翼膜',
+            'minecraft:spider_eye': '蜘蛛眼', 'minecraft:fermented_spider_eye': '发酵蜘蛛眼', 'minecraft:rotten_flesh': '腐肉',
+            'minecraft:bone': '骨头', 'minecraft:bone_meal': '骨粉', 'minecraft:arrow': '箭', 'minecraft:spectral_arrow': '光灵箭',
+            'minecraft:tipped_arrow': '药箭', 'minecraft:bow': '弓', 'minecraft:crossbow': '弩',
+            'minecraft:stone_sword': '石剑', 'minecraft:stone_pickaxe': '石镐', 'minecraft:stone_axe': '石斧', 'minecraft:stone_shovel': '石锹', 'minecraft:stone_hoe': '石锄',
+            'minecraft:wooden_sword': '木剑', 'minecraft:wooden_pickaxe': '木镐', 'minecraft:wooden_axe': '木斧', 'minecraft:wooden_shovel': '木锹', 'minecraft:wooden_hoe': '木锄',
+            'minecraft:leather_helmet': '皮革帽子', 'minecraft:leather_chestplate': '皮革外套', 'minecraft:leather_leggings': '皮革裤子', 'minecraft:leather_boots': '皮革靴子',
+            'minecraft:chainmail_helmet': '锁链头盔', 'minecraft:chainmail_chestplate': '锁链胸甲', 'minecraft:chainmail_leggings': '锁链护腿', 'minecraft:chainmail_boots': '锁链靴子',
+            'minecraft:turtle_helmet': '海龟壳', 'minecraft:scute': '鳞甲',
+            'minecraft:shield': '盾牌', 'minecraft:goat_horn': '山羊角', 'minecraft:brush': '刷子',
+            'minecraft:glass': '玻璃', 'minecraft:obsidian': '黑曜石', 'minecraft:crying_obsidian': '哭泣的黑曜石', 'minecraft:glowstone': '萤石', 'minecraft:glowstone_dust': '萤石粉',
+            'minecraft:sea_lantern': '海晶灯', 'minecraft:jack_o_lantern': '南瓜灯', 'minecraft:lantern': '灯笼', 'minecraft:soul_lantern': '灵魂灯笼',
+            'minecraft:campfire': '营火', 'minecraft:soul_campfire': '灵魂营火', 'minecraft:tnt': 'TNT', 'minecraft:fire_charge': '火焰弹',
+            'minecraft:torch': '火把', 'minecraft:soul_torch': '灵魂火把', 'minecraft:redstone_torch': '红石火把',
+            'minecraft:rail': '铁轨', 'minecraft:powered_rail': '充能铁轨', 'minecraft:detector_rail': '探测铁轨', 'minecraft:activator_rail': '激活铁轨',
+            'minecraft:minecart': '矿车', 'minecraft:chest_minecart': '运输矿车', 'minecraft:furnace_minecart': '动力矿车', 'minecraft:tnt_minecart': 'TNT 矿车', 'minecraft:hopper_minecart': '漏斗矿车',
+            'minecraft:boat': '橡木船', 'minecraft:oak_boat': '橡木船', 'minecraft:spruce_boat': '云杉船', 'minecraft:birch_boat': '白桦船', 'minecraft:jungle_boat': '丛林船',
+            'minecraft:chest': '箱子', 'minecraft:trapped_chest': '陷阱箱', 'minecraft:barrel': '木桶', 'minecraft:hopper': '漏斗', 'minecraft:dropper': '投掷器', 'minecraft:dispenser': '发射器',
+            'minecraft:furnace': '熔炉', 'minecraft:blast_furnace': '高炉', 'minecraft:smoker': '烟熏炉', 'minecraft:lit_furnace': '熔炉(燃烧中)',
+            'minecraft:crafting_table': '工作台', 'minecraft:cartography_table': '制图台', 'minecraft:fletching_table': '制箭台', 'minecraft:smithing_table': '锻造台',
+            'minecraft:loom': '织布机', 'minecraft:composter': '堆肥桶', 'minecraft:beehive': '蜂巢', 'minecraft:bee_nest': '蜂箱',
+            'minecraft:honeycomb': '蜜脾', 'minecraft:honey_bottle': '蜂蜜瓶', 'minecraft:honey_block': '蜂蜜块', 'minecraft:slime_block': '黏液块',
+            'minecraft:spawner': '刷怪笼', 'minecraft:dirt_path': '土径', 'minecraft:farmland': '耕地', 'minecraft:ladder': '梯子', 'minecraft:rail': '铁轨',
+            'minecraft:cobweb': '蜘蛛网', 'minecraft:vine': '藤蔓', 'minecraft:bamboo': '竹子', 'minecraft:sugar_cane': '甘蔗', 'minecraft:cactus': '仙人掌',
+            'minecraft:torchflower': '火把花', 'minecraft:pitcher_plant': '投手花', 'minecraft:cherry_leaves': '樱花树叶', 'minecraft:pink_petals': '粉红色花瓣',
+            'minecraft:spore_blossom': '孢子花', 'minecraft:moss_block': '苔藓块', 'minecraft:moss_carpet': '苔藓地毯', 'minecraft:azalea': '杜鹃花丛', 'minecraft:flowering_azalea': '开花杜鹃花丛',
+            'minecraft:mud': '泥巴', 'minecraft:muddy_mangrove_roots': '泥泞红树根', 'minecraft:mangrove_roots': '红树根', 'minecraft:mangrove_propagule': '红树胎生苗',
+            'minecraft:frogspawn': '蛙卵', 'minecraft:torchflower_seeds': '火把花种子', 'minecraft:pitcher': '投手',
+            'minecraft:sniffer_egg': '嗅探兽蛋', 'minecraft:torchflower': '火把花', 'minecraft:suspicious_gravel': '可疑的沙砾', 'minecraft:suspicious_sand': '可疑的沙子',
+            'minecraft:brushable_block': '可刷的方块', 'minecraft:decorated_pot': '饰纹陶罐', 'minecraft:sherd': '陶片',
+            'minecraft:experience_bottle': '附魔之瓶', 'minecraft:glass_bottle': '玻璃瓶', 'minecraft:brewing_stand': '酿造台',
+            'minecraft:nether_wart': '下界疣', 'minecraft:nether_wart_block': '下界疣块', 'minecraft:warped_wart_block': '诡异疣块',
+            'minecraft:warped_nylium': '诡异菌岩', 'minecraft:crimson_nylium': '绯红菌岩', 'minecraft:nether_sprouts': '下界苗', 'minecraft:twisting_vines': '扭曲藤蔓', 'minecraft:weeping_vines': '垂泪藤蔓',
+            'minecraft:crimson_stem': '绯红菌柄', 'minecraft:warped_stem': '诡异菌柄', 'minecraft:shroomlight': '菌光体', 'minecraft:basalt': '玄武岩', 'minecraft:blackstone': '黑石',
+            'minecraft:gilded_blackstone': '镶金黑石', 'minecraft:soul_soil': '灵魂土', 'minecraft:soul_sand': '灵魂沙',
+            'minecraft:respawn_anchor': '重生锚', 'minecraft:crying_obsidian': '哭泣的黑曜石', 'minecraft:lodestone': '磁石', 'minecraft:calibrated_sculk': '校频幽匿块',
+            'minecraft:reinforced_deepslate': '强化深板岩', 'minecraft:frog_egg': '蛙卵',
+        };
+
+        function getEnchantName(id) {
+            return enchantNames[id] || id.replace('minecraft:', '').replace(/_/g, ' ');
+        }
+
+        function getItemName(id) {
+            // 优先用本地译名表，否则回退到首字母大写英文
+            if (itemNames[id]) return itemNames[id];
+            const base = id.replace('minecraft:', '').replace(/_/g, ' ');
+            return base.charAt(0).toUpperCase() + base.slice(1);
+        }
+
+        function getItemIconUrl(itemId) {
+            // 本地贴图: /images/mc-items/<id>.png
+            // minecraft:diamond_sword → diamond_sword.png
+            const localId = itemId.split(':').pop();
+            return `/images/mc-items/${localId}.png`;
+        }
+
+        function renderItem(item) {
+            if (!item) return '<div class="inv-slot empty"></div>';
+            const pct = item.maxDamage ? Math.round((1 - item.damage / item.maxDamage) * 100) : 100;
+            const dmgColor = pct > 60 ? '#2ecc71' : pct > 20 ? '#f39c12' : '#e74c3c';
+            const ench = item.enchantments?.length ? '<span class="inv-ench-mark">&#10022;</span>' : '';
+            const iconUrl = getItemIconUrl(item.id);
+            const itemData = encodeURIComponent(JSON.stringify(item));
+            return `<div class="inv-slot" data-item="${itemData}" title="${item.name}${item.count > 1 ? ' x' + item.count : ''}">
+                <img src="${iconUrl}" alt="${item.name}" class="inv-icon" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='';">
+                <span class="inv-name-fallback" style="display:none;">${ench}${item.name.substring(0,4)}</span>
+                ${item.count > 1 ? `<span class="inv-count">${item.count}</span>` : ''}
+                ${item.damage > 0 && item.maxDamage ? `<div class="inv-dmg-bar" style="background:${dmgColor};width:${pct}%;"></div>` : ''}
+            </div>`;
+        }
+
+        // 物品详情弹窗
+        function showItemDetail(item, event) {
+            const popup = document.getElementById('item-detail-popup');
+            document.getElementById('item-detail-icon').src = getItemIconUrl(item.id);
+            document.getElementById('item-detail-icon').style.display = '';
+            document.getElementById('item-detail-name').textContent = item.name;
+            document.getElementById('item-detail-id').textContent = item.id;
+
+            // 数量 & 耐久
+            let statsHtml = '';
+            if (item.count > 1) statsHtml += `<div>数量: <b>${item.count}</b></div>`;
+            if (item.maxDamage > 0) {
+                const pct = Math.round((1 - item.damage / item.maxDamage) * 100);
+                const dmgColor = pct > 60 ? '#2ecc71' : pct > 20 ? '#f39c12' : '#e74c3c';
+                statsHtml += `<div>耐久: <span style="color:${dmgColor}">${item.maxDamage - item.damage} / ${item.maxDamage}</span> (${pct}%)</div>`;
+            }
+            if (item.slot !== undefined) statsHtml += `<div>格子: ${item.slot}</div>`;
+            document.getElementById('item-detail-stats').innerHTML = statsHtml || '';
+
+            // 附魔
+            let enchHtml = '';
+            if (item.enchantments?.length) {
+                enchHtml = '<div style="font-size:0.7rem;opacity:0.6;margin-bottom:0.25rem;">附魔:</div>';
+                enchHtml += item.enchantments.map(e => {
+                    const name = getEnchantName(e.id);
+                    const lvl = e.lvl > 1 ? ` ${toRoman(e.lvl)}` : '';
+                    return `<div style="color:#8e44ad;font-size:0.75rem;padding-left:0.25rem;">${name}${lvl}</div>`;
+                }).join('');
+            }
+            document.getElementById('item-detail-enchants').innerHTML = enchHtml;
+
+            // Lore
+            let loreHtml = '';
+            if (item.lore?.length) {
+                loreHtml = item.lore.filter(l => l).map(l => `<div>${l}</div>`).join('');
+            }
+            document.getElementById('item-detail-lore').innerHTML = loreHtml;
+
+            // 耐久条
+            let duraHtml = '';
+            if (item.maxDamage > 0) {
+                const pct = Math.round((1 - item.damage / item.maxDamage) * 100);
+                const dmgColor = pct > 60 ? '#2ecc71' : pct > 20 ? '#f39c12' : '#e74c3c';
+                duraHtml = `<div style="height:4px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden;"><div style="height:100%;background:${dmgColor};width:${pct}%;border-radius:2px;"></div></div>`;
+            }
+            document.getElementById('item-detail-durability').innerHTML = duraHtml;
+
+            // 定位弹窗
+            const rect = event.target.closest('.inv-slot').getBoundingClientRect();
+            let left = rect.right + 8;
+            let top = rect.top;
+            if (left + 260 > window.innerWidth) left = rect.left - 268;
+            if (top + 300 > window.innerHeight) top = window.innerHeight - 310;
+            if (top < 0) top = 8;
+            popup.style.left = left + 'px';
+            popup.style.top = top + 'px';
+            popup.style.display = '';
+        }
+
+        function hideItemDetail() {
+            document.getElementById('item-detail-popup').style.display = 'none';
+        }
+
+        function toRoman(num) {
+            const r = ['','I','II','III','IV','V','VI','VII','VIII','IX','X',
+                'XI','XII','XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX',
+                'XXI','XXII','XXIII','XXIV','XXV','XXVI','XXVII','XXVIII','XXIX','XXX',
+                'XXXI','XXXII','XXXIII','XXXIV','XXXV','XXXVI','XXXVII','XXXVIII','XXXIX','XL',
+                'XLI','XLII','XLIII','XLIV','XLV','XLVI','XLVII','XLVIII','XLIX','L',
+                'LI','LII','LIII','LIV','LV','LVI','LVII','LVIII','LIX','LX',
+                'LXI','LXII','LXIII','LXIV','LXV','LXVI','LXVII','LXVIII','LXIX','LXX',
+                'LXXI','LXXII','LXXIII','LXXIV','LXXV','LXXVI','LXXVII','LXXVIII','LXXIX','LXXX',
+                'LXXXI','LXXXII','LXXXIII','LXXXIV','LXXXV','LXXXVI','LXXXVII','LXXXVIII','LXXXIX','XC',
+                'XCI','XCII','XCIII','XCIV','XCV','XCVI','XCVII','XCVIII','XCIX','C',
+                'CI','CII','CIII','CIV','CV','CVI','CVII','CVIII','CIX','CX',
+                'CXI','CXII','CXIII','CXIV','CXV','CXVI','CXVII','CXVIII','CXIX','CXX',
+                'CXXI','CXXII','CXXIII','CXXIV','CXXV','CXXVI','CXXVII','CXXVIII','CXXIX','CXXX',
+                'CXXXI','CXXXII','CXXXIII','CXXXIV','CXXXV','CXXXVI','CXXXVII','CXXXVIII','CXXXIX','CXL',
+                'CXLI','CXLII','CXLIII','CXLIV','CXLV','CXLVI','CXLVII','CXLVIII','CXLIX','CL',
+                'CLI','CLII','CLIII','CLIV','CLV','CLVI','CLVII','CLVIII','CLIX','CLX',
+                'CLXI','CLXII','CLXIII','CLXIV','CLXV','CLXVI','CLXVII','CLXVIII','CLXIX','CLXX',
+                'CLXXI','CLXXII','CLXXIII','CLXXIV','CLXXV','CLXXVI','CLXXVII','CLXXVIII','CLXXIX','CLXXX',
+                'CLXXXI','CLXXXII','CLXXXIII','CLXXXIV','CLXXXV','CLXXXVI','CLXXXVII','CLXXXVIII','CLXXXIX','CXC',
+                'CXCI','CXCII','CXCIII','CXCIV','CXCV','CXCVI','CXCVII','CXCVIII','CXCIX','CC',
+                'CCI','CCII','CCIII','CCIV','CCV','CCVI','CCVII','CCVIII','CCIX','CCX',
+                'CCXI','CCXII','CCXIII','CCXIV','CCXV','CCXVI','CCXVII','CCXVIII','CCXIX','CCXX',
+                'CCXXI','CCXXII','CCXXIII','CCXXIV','CCXXV','CCXXVI','CCXXVII','CCXXVIII','CCXXIX','CCXXX',
+                'CCXXXI','CCXXXII','CCXXXIII','CCXXXIV','CCXXXV','CCXXXVI','CCXXXVII','CCXXXVIII','CCXXXIX','CCXL',
+                'CCXLI','CCXLII','CCXLIII','CCXLIV','CCXLV','CCXLVI','CCXLVII','CCXLVIII','CCXLIX','CCL',
+                'CCLI','CCLII','CCLIII','CCLIV','CCLV'];
+            return r[num] || num;
+        }
+
+        // 物品点击事件：用事件委托
+        document.addEventListener('click', function(e) {
+            const slot = e.target.closest('.inv-slot');
+            if (!slot) { hideItemDetail(); return; }
+            const itemData = slot.dataset.item;
+            if (!itemData) { hideItemDetail(); return; }
+            try {
+                const item = JSON.parse(decodeURIComponent(itemData));
+                showItemDetail(item, e);
+            } catch { hideItemDetail(); }
+        });
+
+        async function openInventory(gameUsername) {
+            showOverlay();
+            const panel = document.getElementById('inventory-panel');
+            panel.style.display = '';
+            document.getElementById('inv-player-name').textContent = gameUsername;
+            document.getElementById('inv-loading').style.display = '';
+            document.getElementById('inv-content').style.display = 'none';
+            document.getElementById('inv-error').style.display = 'none';
+
+            try {
+                const data = await getInventory(gameUsername);
+
+                // 状态栏
+                const statsEl = document.getElementById('inv-stats');
+                const fullHearts = Math.floor(data.health / 2);
+                const halfHeart = data.health % 2 !== 0;
+                const emptyHearts = 10 - fullHearts - (halfHeart ? 1 : 0);
+                const hearts = '<span style="color:#e74c3c;">' + '♥'.repeat(fullHearts) + (halfHeart ? '♡' : '') + '</span>' + '<span style="opacity:0.3;">' + '♡'.repeat(Math.max(0, emptyHearts)) + '</span>';
+                const foods = '🍗'.repeat(Math.floor(data.foodLevel / 2));
+                statsEl.innerHTML =
+                    `<span style="font-size:0.75rem;">${hearts} ${data.health}</span>` +
+                    `<span style="font-size:0.75rem;color:#f39c12;">${foods} ${data.foodLevel}</span>` +
+                    `<span style="font-size:0.75rem;color:#2ecc71;">✦ ${data.xpLevel}级 (${data.xpProgress}%)</span>` +
+                    `<span style="font-size:0.75rem;opacity:0.6;">${data.itemCount} 物品</span>`;
+
+                // 装备栏 / 副手已移除（按用户要求只保留背包和快捷栏）
+
+                // 主背包 (9-35, 3行)
+                const mainSlots = [];
+                for (let i = 0; i < 27; i++) mainSlots.push(renderItem(data.main[i]));
+                document.getElementById('inv-main').innerHTML = mainSlots.join('');
+
+                // 快捷栏 (0-8)
+                const hotbarSlots = [];
+                for (let i = 0; i < 9; i++) hotbarSlots.push(renderItem(data.hotbar[i]));
+                document.getElementById('inv-hotbar').innerHTML = hotbarSlots.join('');
+
+                document.getElementById('inv-loading').style.display = 'none';
+                document.getElementById('inv-content').style.display = '';
+            } catch (err) {
+                document.getElementById('inv-loading').style.display = 'none';
+                document.getElementById('inv-error').style.display = '';
+                document.getElementById('inv-error').textContent = err.message || '加载失败';
+            }
+        }
+
+        document.getElementById('close-inventory-btn').addEventListener('click', closeAllModals);
+
+        // ===== MC 游戏账号面板（内嵌在个人中心） =====
+        let mcBindings = [];
+        let mcCurrentPlayer = null;
+
+        async function loadMcAccount() {
+            await refreshMcBindings();
+            if (mcCurrentPlayer) await loadMcInventory(mcCurrentPlayer);
+        }
+
+        // 刷新绑定列表和下拉框
+        async function refreshMcBindings() {
+            try {
+                const data = await getGameBindings();
+                mcBindings = data.bindings || [];
+            } catch {
+                mcBindings = [];
+            }
+            renderMcSelect();
+            updateMcEmptyMask();
+        }
+
+        function renderMcSelect() {
+            const select = document.getElementById('mc-player-select');
+            const delBtn = document.getElementById('mc-del-btn');
+
+            select.innerHTML = '';
+
+            if (mcBindings.length === 0) {
+                // 无绑定：显示提示
+                const opt = document.createElement('option');
+                opt.value = '';
+                opt.textContent = '请选择账号';
+                opt.disabled = true;
+                select.appendChild(opt);
+            } else if (mcBindings.length === 1) {
+                // 只有一个：直接选中，不需要占位 option
+                const b = mcBindings[0];
+                const opt = document.createElement('option');
+                opt.value = b.game_username;
+                opt.textContent = b.game_username;
+                opt.selected = true;
+                select.appendChild(opt);
+                mcCurrentPlayer = b.game_username;
+            } else {
+                // 多个：显示"请选择账号"占位
+                const placeholder = document.createElement('option');
+                placeholder.value = '';
+                placeholder.textContent = '请选择账号';
+                placeholder.disabled = true;
+                select.appendChild(placeholder);
+
+                mcBindings.forEach(b => {
+                    const opt = document.createElement('option');
+                    opt.value = b.game_username;
+                    opt.textContent = b.game_username;
+                    if (b.game_username === mcCurrentPlayer) opt.selected = true;
+                    select.appendChild(opt);
+                });
+            }
+
+            delBtn.style.display = mcCurrentPlayer ? '' : 'none';
+        }
+
+        function updateMcEmptyMask() {
+            const tip = document.getElementById('mc-empty-tip');
+            const card = document.getElementById('mc-inv-card');
+
+            if (mcBindings.length === 0) {
+                tip.style.display = '';
+                card.style.display = 'none';
+                document.getElementById('mc-del-btn').style.display = 'none';
+                mcCurrentPlayer = null;
+            } else {
+                tip.style.display = 'none';
+                if (mcCurrentPlayer) {
+                    card.style.display = '';
+                }
+            }
+        }
+
+        // 下拉框选择
+        document.getElementById('mc-player-select').addEventListener('change', function() {
+            const name = this.value;
+            if (name) {
+                selectMcPlayer(name);
+            } else {
+                mcCurrentPlayer = null;
+                document.getElementById('mc-inv-card').style.display = 'none';
+                const mask = document.getElementById('mc-empty-mask');
+                if (mask) mask.style.display = 'none';
+                document.getElementById('mc-del-btn').style.display = 'none';
+            }
+        });
+
+        // 加号按钮 → 展开绑定表单
+        document.getElementById('mc-add-btn').addEventListener('click', () => {
+            document.getElementById('mc-bind-form').style.display = '';
+            document.getElementById('mc-bind-username').value = '';
+            document.getElementById('mc-bind-error').style.display = 'none';
+            document.getElementById('mc-verify-panel').style.display = 'none';
+            document.getElementById('mc-top-success').style.display = 'none';
+            document.getElementById('mc-bind-username').focus();
+        });
+
+        // 取消绑定表单
+        document.getElementById('mc-bind-cancel').addEventListener('click', () => {
+            document.getElementById('mc-bind-form').style.display = 'none';
+            document.getElementById('mc-verify-panel').style.display = 'none';
+        });
+
+        // 删除按钮 → 解绑当前选中账号
+        document.getElementById('mc-del-btn').addEventListener('click', async () => {
+            if (!mcCurrentPlayer) return;
+            if (!await showConfirm('解绑确认', `确定解绑 Minecraft 账号 ${mcCurrentPlayer}？`, true)) return;
+            try {
+                await unbindGameAccount(mcCurrentPlayer);
+                showToast('已解绑 ' + mcCurrentPlayer);
+                mcCurrentPlayer = null;
+                document.getElementById('mc-inv-card').style.display = 'none';
+                await refreshMcBindings();
+            } catch (err) {
+                showToast(err.message, { type: 'error' });
+            }
+        });
+
+        async function selectMcPlayer(name) {
+            mcCurrentPlayer = name;
+            renderMcSelect();
+            document.getElementById('mc-inv-card').style.display = '';
+            document.getElementById('mc-empty-mask').style.display = 'none';
+            document.getElementById('mc-del-btn').style.display = '';
+            await loadMcInventory(name);
+        }
+
+        async function loadMcInventory(gameUsername) {
+            const statsEl = document.getElementById('mc-inv-stats');
+            statsEl.innerHTML = '<span style="opacity:0.5;font-size:0.8rem;">加载中...</span>';
+            try {
+                const data = await getInventory(gameUsername);
+                console.log('[MC面板] API返回:', { health: data.health, food: data.foodLevel, armor: data.armor, offhand: data.offhand });
+
+                const fullHearts = Math.floor(data.health / 2);
+                const halfHeart = data.health % 2 !== 0;
+                const emptyHearts = 10 - fullHearts - (halfHeart ? 1 : 0);
+                const hearts = '<span style="color:#e74c3c;">' + '♥'.repeat(fullHearts) + (halfHeart ? '♡' : '') + '</span>' + '<span style="opacity:0.3;">' + '♡'.repeat(Math.max(0, emptyHearts)) + '</span>';
+                const foods = '🍗'.repeat(Math.floor(data.foodLevel / 2));
+                statsEl.innerHTML =
+                    `<span style="font-size:0.75rem;">${hearts} ${data.health.toFixed(0)}</span>` +
+                    `<span style="font-size:0.75rem;color:#f39c12;">${foods} ${data.foodLevel}</span>` +
+                    `<span style="font-size:0.75rem;color:#2ecc71;">✦ ${data.xpLevel}级</span>` +
+                    `<span style="font-size:0.75rem;opacity:0.6;">${data.itemCount} 物品</span>`;
+
+                // 护甲 + 副手显示块已移除（按要求只显示背包与快捷栏）
+                // const armorArr = Array.isArray(data.armor) ? data.armor : [];
+                // const offhandArr = Array.isArray(data.offhand) ? data.offhand : [];
+
+                // 主背包（填充 27 格）
+                const mainArr = Array.isArray(data.main) ? data.main : [];
+                const mainSlots = [];
+                for (let i = 0; i < 27; i++) mainSlots.push(renderItem(mainArr[i]));
+                document.getElementById('mc-inv-main').innerHTML = mainSlots.join('');
+
+                // 快捷栏（填充 9 格）
+                const hotbarArr = Array.isArray(data.hotbar) ? data.hotbar : [];
+                const hotbarSlots = [];
+                for (let i = 0; i < 9; i++) hotbarSlots.push(renderItem(hotbarArr[i]));
+                document.getElementById('mc-inv-hotbar').innerHTML = hotbarSlots.join('');
+
+            } catch (err) {
+                statsEl.innerHTML = '<span style="color:#e74c3c;font-size:0.8rem;">加载失败: ' + (err.message || '未知错误') + '</span>';
+                document.getElementById('mc-inv-main').innerHTML = '';
+                document.getElementById('mc-inv-hotbar').innerHTML = '';
+            }
+        }
+
+        // 绑定 → 获取验证码
+        document.getElementById('mc-bind-btn').addEventListener('click', async () => {
+            const username = document.getElementById('mc-bind-username').value.trim();
+            const errEl = document.getElementById('mc-bind-error');
+            errEl.style.display = 'none';
+
+            if (!username || username.length < 2 || username.length > 16) {
+                errEl.textContent = '请输入有效的 Minecraft 用户名（2-16字符）';
+                errEl.style.display = '';
+                return;
+            }
+
+            try {
+                const result = await generateVerifyCode(username);
+                if (result && result.code) {
+                    document.getElementById('mc-verify-panel').style.display = '';
+                    document.getElementById('mc-verify-code').textContent = '/gcbind ' + result.code;
+                    document.getElementById('mc-verify-error').textContent = '';
+                    document.getElementById('mc-verify-panel').dataset.username = username;
+                    document.getElementById('mc-verify-panel').dataset.expires = Date.now() + 300000;
+                }
+            } catch (err) {
+                errEl.textContent = err.message || '生成验证码失败';
+                errEl.style.display = '';
+            }
+        });
+
+        // 复制验证命令
+        document.getElementById('mc-copy-code-btn').addEventListener('click', async () => {
+            const code = document.getElementById('mc-verify-code').textContent.trim();
+            if (!code) return;
+            const btn = document.getElementById('mc-copy-code-btn');
+            const copyIcon = btn.querySelector('.mc-copy-icon');
+            const checkIcon = btn.querySelector('.mc-check-icon');
+            try {
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(code);
+                } else {
+                    const ta = document.createElement('textarea');
+                    ta.value = code;
+                    ta.style.position = 'fixed';
+                    ta.style.opacity = '0';
+                    document.body.appendChild(ta);
+                    ta.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(ta);
+                }
+                btn.classList.add('copied');
+                if (copyIcon) copyIcon.style.display = 'none';
+                if (checkIcon) checkIcon.style.display = '';
+                showToast('已复制到剪贴板');
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    if (copyIcon) copyIcon.style.display = '';
+                    if (checkIcon) checkIcon.style.display = 'none';
+                }, 1500);
+            } catch (err) {
+                showToast('复制失败，请手动选择', { type: 'error' });
+            }
+        });
+
+        // 检查绑定状态
+        document.getElementById('mc-check-bind-btn').addEventListener('click', async () => {
+            const panel = document.getElementById('mc-verify-panel');
+            const username = panel.dataset.username;
+            const errEl = document.getElementById('mc-verify-error');
+
+            if (Date.now() > parseInt(panel.dataset.expires || 0)) {
+                errEl.textContent = '验证码已过期，请重新获取';
+                return;
+            }
+
+            try {
+                const data = await getGameBindings();
+                const bindings = data.bindings || [];
+                const found = bindings.find(b => b.game_username.toLowerCase() === username.toLowerCase());
+                if (found) {
+                    // 绑定成功，关闭弹层并刷新
+                    document.getElementById('mc-bind-form').style.display = 'none';
+                    document.getElementById('mc-verify-panel').style.display = 'none';
+                    document.getElementById('mc-top-success').textContent = '绑定成功: ' + username;
+                    document.getElementById('mc-top-success').style.display = '';
+                    document.getElementById('mc-bind-username').value = '';
+                    await refreshMcBindings();
+                    selectMcPlayer(username);
+                } else {
+                    errEl.textContent = '尚未检测到绑定，请在游戏中输入指令后重试';
+                }
+            } catch (err) {
+                errEl.textContent = err.message || '检查失败';
+            }
+        });
+
+
+        // ===== 2FA =====
+        async function load2FAStatus() {
+            const statusArea = document.getElementById('2fa-status-area');
+            const setupArea = document.getElementById('2fa-setup-area');
+            const disableArea = document.getElementById('2fa-disable-area');
+            if (currentUser?.totp_enabled) {
+                statusArea.innerHTML = '<p style="color:#2ecc71;font-size:0.9rem;"><i class="fas fa-check-circle"></i> 两步验证已启用 — 登录时需要输入身份验证器动态码</p>';
+                setupArea.style.display = 'none';
+                disableArea.style.display = '';
+            } else {
+                statusArea.innerHTML = '<p style="font-size:0.9rem;opacity:0.7;">两步验证未启用</p><button class="auth-btn secondary" id="setup-2fa-btn" style="width:100%;">设置两步验证</button>';
+                setupArea.style.display = 'none';
+                disableArea.style.display = 'none';
+                document.getElementById('setup-2fa-btn')?.addEventListener('click', async () => {
+                    try {
+                        const d = await setup2FA();
+                        document.getElementById('totp-qrcode').innerHTML = `<img src="${d.qrcode}" alt="二维码"><div class="totp-manual">手动密钥: ${d.manualKey}</div>`;
+                        setupArea.style.display = '';
+                    } catch (err) { statusArea.innerHTML += `<p style="color:#e74c3c;">${escapeHtml(err.message)}</p>`; }
+                });
+            }
+        }
+        document.getElementById('2fa-enable-form').addEventListener('submit', async e => {
+            e.preventDefault();
+            document.getElementById('2fa-setup-error').textContent = '';
+            try {
+                await enable2FA(document.getElementById('2fa-setup-code').value.trim());
+                currentUser.totp_enabled = 1;
+                showToast('2FA已启用'); load2FAStatus(); loadOverview();
+            } catch (err) { document.getElementById('2fa-setup-error').textContent = err.message; }
+        });
+        document.getElementById('2fa-disable-form').addEventListener('submit', async e => {
+            e.preventDefault();
+            document.getElementById('2fa-disable-error').textContent = '';
+            try {
+                const hashedPwd = await sha256(document.getElementById('2fa-disable-password').value);
+                await disable2FA(hashedPwd);
+                currentUser.totp_enabled = 0;
+                showToast('2FA已禁用'); load2FAStatus(); loadOverview();
+            } catch (err) { document.getElementById('2fa-disable-error').textContent = err.message; }
+        });
+
+        // ===== 修改密码 =====
+        document.getElementById('change-password-form').addEventListener('submit', async e => {
+            e.preventDefault();
+            const cp = document.getElementById('cp-current').value, np = document.getElementById('cp-new').value, np2 = document.getElementById('cp-new2').value;
+            document.getElementById('password-error').textContent = ''; document.getElementById('password-success').textContent = '';
+            if (np !== np2) { document.getElementById('password-error').textContent = '两次输入不一致'; return; }
+            try {
+                const [hc, hn] = await Promise.all([sha256(cp), sha256(np)]);
+                await changePassword(hc, hn);
+                document.getElementById('password-success').textContent = '密码修改成功，请重新登录...';
+                setTimeout(() => { window.location.href = '/login.html'; }, 1500);
+            } catch (err) { document.getElementById('password-error').textContent = err.message; }
+        });
+
+        // ===== 换绑邮箱 =====
+        document.getElementById('change-email-form').addEventListener('submit', async e => {
+            e.preventDefault();
+            const newEmail = document.getElementById('ce-new-email').value.trim();
+            const password = document.getElementById('ce-password').value;
+            const errEl = document.getElementById('email-change-error');
+            const sucEl = document.getElementById('email-change-success');
+            errEl.textContent = ''; sucEl.textContent = '';
+            try {
+                const hashedPwd = await sha256(password);
+                const data = await changeEmail(newEmail, hashedPwd);
+                sucEl.textContent = data.message + (data.verificationHint ? ' 验证码: ' + data.verificationHint : '');
+                currentUser.email = newEmail;
+                currentUser.email_verified = 0;
+                updateSidebar(currentUser);
+                loadOverview();
+            } catch (err) { errEl.textContent = err.message; }
+        });
+
+        // ===== 注销 =====
+        document.getElementById('delete-account-form').addEventListener('submit', async e => {
+            e.preventDefault();
+            if (!await showConfirm('注销账号', '确定永久注销账号吗？不可撤销！', true)) return;
+            try {
+                const hashedPwd = await sha256(document.getElementById('delete-password').value);
+                await deleteAccount(hashedPwd);
+                showToast('账号已注销'); setTimeout(() => { window.location.href = '/'; }, 800);
+            } catch (err) { document.getElementById('delete-error').textContent = err.message; }
+        });
+
+        // ===== 折叠面板 =====
+        document.querySelectorAll('.collapse-header').forEach(h => {
+            h.addEventListener('click', () => { h.classList.toggle('open'); h.nextElementSibling.classList.toggle('hidden'); });
+        });
+
+        // ===== 会话管理 =====
+        async function loadSessions() {
+            const el = document.getElementById('sessions-list');
+            try {
+                const data = await getSessions();
+                if (!data.sessions.length) { el.innerHTML = '<p style="text-align:center;opacity:0.5;padding:2rem;">无活跃会话</p>'; return; }
+                el.innerHTML = data.sessions.map((s, i) => {
+                    const isCurrent = i === 0;
+                    let device = '其他设备';
+                    const ua = s.userAgent || '';
+                    if (ua.includes('Windows')) device = 'Windows';
+                    else if (ua.includes('Mac')) device = 'Mac';
+                    else if (ua.includes('iPhone') || ua.includes('iPad')) device = 'iOS';
+                    else if (ua.includes('Android')) device = 'Android';
+                    return `<div class="session-item">
+                        <div class="session-info">
+                            <div class="session-name"><i class="fas fa-${device === 'iOS' || device === 'Android' ? 'mobile-alt' : 'desktop'}"></i> ${device} ${isCurrent ? '<span class="session-current">当前</span>' : ''}</div>
+                            <div class="session-detail">IP: ${s.ipAddress || '-'} | ${s.createdAt || '-'}</div>
+                        </div>
+                        ${!isCurrent ? `<button class="auth-btn secondary" onclick="window.revokeSession(${s.id})" style="font-size:0.75rem;padding:0.4rem 0.75rem;">断开</button>` : ''}
+                    </div>`;
+                }).join('');
+            } catch (err) { el.innerHTML = '<p style="color:#e74c3c;">加载失败: ' + err.message + '</p>'; }
+        }
+        document.getElementById('refresh-sessions-btn').addEventListener('click', loadSessions);
+        window.revokeSession = async function(id) {
+            if (!await showConfirm('断开会话', '确定断开此会话？')) return;
+            try { await revokeSession(id); loadSessions(); loadOverview(); }
+            catch (err) { showToast(err.message, { type: 'error' }); }
+        };
+
+        // ===== 登录历史 & 活动日志 =====
+        async function loadLoginHistory() {
+            const tbody = document.getElementById('login-log-tbody');
+            try {
+                const data = await getLoginHistory();
+                if (!data.logs.length) { tbody.innerHTML = '<tr><td colspan="3" class="log-empty">暂无记录</td></tr>'; return; }
+                tbody.innerHTML = data.logs.map(l => `<tr><td>${l.created_at}</td><td>${l.ip_address || '-'}</td><td class="${l.success ? 'log-success' : 'log-fail'}">${l.success ? '成功' : '失败'} ${l.detail ? '(' + l.detail + ')' : ''}</td></tr>`).join('');
+            } catch { tbody.innerHTML = '<tr><td colspan="3" class="log-empty">加载失败</td></tr>'; }
+        }
+        async function loadActivityLog() {
+            const tbody = document.getElementById('activity-log-tbody');
+            try {
+                const data = await getActivityLog();
+                if (!data.logs.length) { tbody.innerHTML = '<tr><td colspan="3" class="log-empty">暂无记录</td></tr>'; return; }
+                tbody.innerHTML = data.logs.map(l => `<tr><td>${l.created_at}</td><td>${l.action}</td><td>${l.detail || '-'}</td></tr>`).join('');
+            } catch { tbody.innerHTML = '<tr><td colspan="3" class="log-empty">加载失败</td></tr>'; }
+        }
+
+        // ===== 管理员 =====
+        function roleLabel(role) { return role === 'admin' ? '<span style="color:#e67e22;font-weight:600;">管理员</span>' : '<span>普通用户</span>'; }
+        async function loadAdminUsers() {
+            const el = document.getElementById('admin-users-list');
+            const errEl = document.getElementById('admin-error');
+            errEl.textContent = '';
+            try {
+                const data = await adminFetchUsers();
+                if (!data.users.length) { el.innerHTML = '<p style="text-align:center;padding:1rem;opacity:0.5;">暂无用户</p>'; return; }
+                el.innerHTML = data.users.map(u => {
+                    const isBanned = u.status === 'banned';
+                    const banBtn = isBanned
+                        ? `<button class="auth-btn secondary adm-action" data-action="unban" data-id="${u.id}" style="font-size:0.7rem;padding:0.25rem 0.5rem;color:#2ecc71;">解封</button>`
+                        : `<button class="auth-btn secondary adm-action" data-action="ban" data-id="${u.id}" style="font-size:0.7rem;padding:0.25rem 0.5rem;color:#e67e22;">封禁</button>`;
+                    const evBtn = u.email_verified
+                        ? '' // 已验证：不显示按钮
+                        : `<button class="auth-btn secondary adm-action" data-action="verify" data-id="${u.id}" style="font-size:0.7rem;padding:0.25rem 0.5rem;color:#2ecc71;">标记邮箱已验证</button>`;
+                    const twofaBtn = u.totp_enabled
+                        ? `<button class="auth-btn secondary adm-action" data-action="rm2fa" data-id="${u.id}" style="font-size:0.7rem;padding:0.25rem 0.5rem;color:#e67e22;">移除 2FA</button>`
+                        : '';
+                    return `<div class="admin-user-card" style="${isBanned ? 'background:rgba(231,76,60,0.05);' : ''}">
+                        <div class="admin-user-header">
+                            <span class="admin-user-id">#${u.id}</span><strong>${escapeHtml(u.username)}</strong>
+                            ${u.nickname ? '<span style="opacity:0.6;">(' + escapeHtml(u.nickname) + ')</span>' : ''}
+                            <span class="admin-user-role">${roleLabel(u.role)}</span>${statusBadge(u.status)}
+                            ${u.totp_enabled ? '<span style="font-size:0.7rem;color:#3498db;">2FA</span>' : ''}
+                            ${u.email_verified ? '<span style="font-size:0.7rem;color:#2ecc71;">邮箱✓</span>' : '<span style="font-size:0.7rem;color:#e67e22;">邮箱✗</span>'}
+                            ${isBanned && u.ban_reason ? '<span style="font-size:0.7rem;opacity:0.6;margin-left:auto;">' + escapeHtml(u.ban_reason) + '</span>' : ''}
+                        </div>
+                        <div class="admin-user-meta"><span>${escapeHtml(u.email)}</span><span>${u.created_at}</span></div>
+                        <div class="admin-user-actions">
+                            <button class="auth-btn secondary adm-action" data-action="role" data-id="${u.id}" data-role="${u.role}" style="font-size:0.7rem;padding:0.25rem 0.5rem;">切换角色</button>
+                            ${banBtn}
+                            <button class="auth-btn secondary adm-action" data-action="setpwd" data-id="${u.id}" data-name="${escapeHtml(u.username)}" style="font-size:0.7rem;padding:0.25rem 0.5rem;">修改密码</button>
+                            ${evBtn}
+                            ${twofaBtn}
+                            <button class="auth-btn secondary adm-action" data-action="unlock" data-id="${u.id}" style="font-size:0.7rem;padding:0.25rem 0.5rem;">解锁</button>
+                            <button class="auth-btn secondary adm-action" data-action="inventory" data-id="${u.id}" data-name="${escapeHtml(u.username)}" style="font-size:0.7rem;padding:0.25rem 0.5rem;color:#3498db;">查看背包</button>
+                            <button class="auth-btn secondary adm-action" data-action="delete" data-id="${u.id}" style="font-size:0.7rem;padding:0.25rem 0.5rem;color:#e74c3c;">删除</button>
+                        </div>
+                    </div>`;
+                }).join('');
+            } catch (err) { errEl.textContent = err.message; }
+        }
+
+        function escapeHtml(str) {
+            const d = document.createElement('div');
+            d.textContent = str;
+            return d.innerHTML;
+        }
+
+        function showAdminMsg(type, msg) {
+            const el = document.getElementById('admin-' + type);
+            if (el) { el.textContent = msg; setTimeout(() => { if (el.textContent === msg) el.textContent = ''; }, 5000); }
+        }
+
+        // 事件委托：处理所有管理员按钮点击
+        document.getElementById('admin-users-list').addEventListener('click', async (e) => {
+            const btn = e.target.closest('.adm-action');
+            if (!btn) return;
+            const action = btn.dataset.action;
+            const id = parseInt(btn.dataset.id);
+
+            btn.disabled = true;
+            const origText = btn.textContent;
+            btn.textContent = '...';
+            try {
+                switch (action) {
+                    case 'role': {
+                        const cr = btn.dataset.role;
+                        const nr = cr === 'admin' ? 'user' : 'admin';
+                        if (!await showConfirm('切换角色', `将用户 #${id} 改为 ${nr === 'admin' ? '管理员' : '普通用户'}？`)) break;
+                        const d = await adminChangeRole(id, nr);
+                        showAdminMsg('success', d.message);
+                        loadAdminUsers();
+                        return;
+                    }
+                    case 'ban': {
+                        const reason = await showPrompt('封禁用户', '请输入封禁原因（可选）：', '违规行为');
+                        if (reason === null) break;
+                        const d = await adminBanUser(id, reason);
+                        showAdminMsg('success', d.message);
+                        loadAdminUsers();
+                        return;
+                    }
+                    case 'unban': {
+                        if (!await showConfirm('解封确认', '确定解封该用户？')) break;
+                        const d = await adminUnbanUser(id);
+                        showAdminMsg('success', d.message);
+                        loadAdminUsers();
+                        return;
+                    }
+                    case 'resetpwd': {
+                        if (!await showConfirm('重置密码', '确定重置该用户密码？')) break;
+                        const d = await adminResetPassword(id);
+                        showAdminMsg('success', '新密码: ' + d.newPassword);
+                        try { await navigator.clipboard.writeText(d.newPassword); showAdminMsg('success', '已复制到剪贴板'); } catch {}
+                        return;
+                    }
+                    case 'unlock': {
+                        const d = await adminUnlockUser(id);
+                        showAdminMsg('success', d.message);
+                        loadAdminUsers();
+                        return;
+                    }
+                    case 'inventory': {
+                        // 管理员查看指定用户的背包：先获取该用户的所有绑定账号
+                        const targetName = btn.dataset.name || ('#' + id);
+                        const bindingsResp = await adminGetUserInventoryBindings(id);
+                        const bs = bindingsResp.bindings || [];
+                        if (bs.length === 0) {
+                            showAdminMsg('error', `用户 ${targetName} 未绑定任何游戏账号`);
+                            return;
+                        }
+                        if (bs.length === 1) {
+                            await openInventory(bs[0].game_username);
+                            return;
+                        }
+                        // 多个账号：弹窗选择
+                        const choice = await showPrompt('选择游戏账号', `用户 ${targetName} 绑定了 ${bs.length} 个游戏账号，输入要查看的玩家名：`, bs[0].game_username);
+                        if (!choice) return;
+                        const target = bs.find(b => b.game_username.toLowerCase() === choice.toLowerCase());
+                        if (!target) { showAdminMsg('error', '该账号不在绑定列表中'); return; }
+                        await openInventory(target.game_username);
+                        return;
+                    }
+                    case 'setpwd': {
+                        openAdminSetPassword(id, btn.dataset.name || '');
+                        return;
+                    }
+                    case 'verify': {
+                        if (!await showConfirm('标记邮箱已验证', `将用户 #${id} 邮箱标记为已验证？`)) break;
+                        const d = await adminSetEmailVerified(id, true);
+                        showAdminMsg('success', d.message);
+                        loadAdminUsers();
+                        return;
+                    }
+                    case 'unverify': {
+                        if (!await showConfirm('撤销邮箱验证', `将用户 #${id} 邮箱标记为未验证？`)) break;
+                        const d = await adminSetEmailVerified(id, false);
+                        showAdminMsg('success', d.message);
+                        loadAdminUsers();
+                        return;
+                    }
+                    case 'rm2fa': {
+                        if (!await showConfirm('移除 2FA', `确认移除用户 #${id} 的两步验证？`, true)) break;
+                        const d = await adminDisable2FA(id);
+                        showAdminMsg('success', d.message);
+                        loadAdminUsers();
+                        return;
+                    }
+                    case 'delete': {
+                        if (!await showConfirm('删除用户', '永久删除该用户？此操作不可撤销！', true)) break;
+                        const d = await adminDeleteUser(id);
+                        showAdminMsg('success', d.message);
+                        loadAdminUsers();
+                        return;
+                    }
+                }
+            } catch (err) {
+                showAdminMsg('error', err.message);
+                console.error('admin action', action, id, err);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = origText;
+            }
+        });
+
+        // ===== 创建用户弹窗 =====
+        let aspTargetId = null;
+        function openCreateUser() {
+            showOverlay();
+            document.getElementById('create-user-panel').style.display = '';
+            document.getElementById('cu-username').value = '';
+            document.getElementById('cu-email').value = '';
+            document.getElementById('cu-password').value = '';
+            document.getElementById('cu-nickname').value = '';
+            document.getElementById('cu-role').value = 'user';
+            document.getElementById('cu-email-verified').checked = false;
+            document.getElementById('cu-error').textContent = '';
+            document.getElementById('cu-success').textContent = '';
+        }
+        function closeCreateUser() { closeAllModals(); }
+        document.getElementById('admin-create-user-btn').addEventListener('click', openCreateUser);
+        document.getElementById('cancel-create-user-btn').addEventListener('click', closeCreateUser);
+        document.getElementById('admin-refresh-btn').addEventListener('click', () => loadAdminUsers());
+
+        document.getElementById('create-user-form').addEventListener('submit', async e => {
+            e.preventDefault();
+            const errEl = document.getElementById('cu-error');
+            const sucEl = document.getElementById('cu-success');
+            errEl.textContent = ''; sucEl.textContent = '';
+            const rawPassword = document.getElementById('cu-password').value;
+            const hashedPassword = await sha256(rawPassword);
+            const data = {
+                username: document.getElementById('cu-username').value.trim(),
+                email: document.getElementById('cu-email').value.trim(),
+                password: hashedPassword,
+                nickname: document.getElementById('cu-nickname').value.trim(),
+                role: document.getElementById('cu-role').value,
+                emailVerified: document.getElementById('cu-email-verified').checked,
+            };
+            try {
+                const d = await adminCreateUser(data);
+                sucEl.textContent = d.message + ' (#' + d.userId + ')';
+                setTimeout(() => {
+                    closeCreateUser();
+                    loadAdminUsers();
+                }, 800);
+            } catch (err) {
+                errEl.textContent = err.message;
+            }
+        });
+
+        // ===== 管理员修改密码弹窗 =====
+        function openAdminSetPassword(userId, username) {
+            aspTargetId = userId;
+            showOverlay();
+            document.getElementById('admin-set-password-panel').style.display = '';
+            document.getElementById('asp-target').textContent = `用户 #${userId} · ${username}`;
+            document.getElementById('asp-password').value = '';
+            document.getElementById('asp-error').textContent = '';
+        }
+        document.getElementById('cancel-asp-btn').addEventListener('click', closeAllModals);
+        document.getElementById('admin-set-password-form').addEventListener('submit', async e => {
+            e.preventDefault();
+            const rawPassword = document.getElementById('asp-password').value;
+            const password = await sha256(rawPassword);
+            const errEl = document.getElementById('asp-error');
+            errEl.textContent = '';
+            if (!aspTargetId) { errEl.textContent = '未指定目标用户'; return; }
+            try {
+                const d = await adminSetPassword(aspTargetId, password);
+                showAdminMsg('success', d.message);
+                closeAllModals();
+            } catch (err) {
+                errEl.textContent = err.message;
+            }
+        });
+
+        // ===== 系统设置 =====
+        async function loadSettings() {
+            const listEl = document.getElementById('settings-list');
+            const errEl = document.getElementById('settings-error');
+            const sucEl = document.getElementById('settings-success');
+            errEl.textContent = ''; sucEl.textContent = '';
+            listEl.innerHTML = '<p style="text-align:center;opacity:0.5;">加载中...</p>';
+            try {
+                const data = await fetchSettings();
+                const settings = data.settings;
+                const keys = Object.keys(settings);
+                if (!keys.length) {
+                    listEl.innerHTML = '<p style="text-align:center;opacity:0.5;">暂无设置项</p>';
+                    return;
+                }
+                listEl.innerHTML = keys.map(key => {
+                    const s = settings[key];
+                    const isSensitive = key.includes('key') || key.includes('secret') || key.includes('password') || key.includes('token');
+                    return `<div class="setting-item" style="background:var(--surface-secondary,rgba(255,255,255,0.03));border-radius:0.5rem;padding:1rem;margin-bottom:0.75rem;">
+                        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:0.5rem;">
+                            <div style="flex:1;min-width:200px;">
+                                <div style="font-weight:600;margin-bottom:0.25rem;">${escapeHtml(key)}</div>
+                                <div style="font-size:0.78rem;opacity:0.5;margin-bottom:0.5rem;">${escapeHtml(s.description || '')}</div>
+                                <div style="font-size:0.7rem;opacity:0.4;">更新于: ${s.updated_at || '-'}</div>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:0.5rem;">
+                                <input type="${isSensitive ? 'password' : 'text'}" id="setting-val-${key}" value="${escapeHtml(s.value || '')}"
+                                    style="padding:0.4rem 0.6rem;border:1px solid var(--border-color,rgba(255,255,255,0.1));border-radius:0.35rem;background:var(--surface,rgba(255,255,255,0.05));color:var(--text);font-size:0.85rem;width:200px;"
+                                    onkeydown="if(event.key==='Enter')window.saveSetting('${key}')">
+                                <button class="auth-btn secondary" style="font-size:0.75rem;padding:0.35rem 0.7rem;" onclick="window.saveSetting('${key}')">保存</button>
+                            </div>
+                        </div>
+                        <div class="form-error" id="setting-error-${key}" style="margin-top:0.3rem;"></div>
+                    </div>`;
+                }).join('');
+            } catch (err) {
+                errEl.textContent = err.message;
+                listEl.innerHTML = '';
+            }
+        }
+
+        window.saveSetting = async function(key) {
+            const valInput = document.getElementById('setting-val-' + key);
+            const errEl = document.getElementById('setting-error-' + key);
+            const sucEl = document.getElementById('settings-success');
+            const value = valInput ? valInput.value : '';
+            errEl.textContent = ''; sucEl.textContent = '';
+            try {
+                await updateSetting(key, value);
+                sucEl.textContent = '设置 ' + key + ' 已保存';
+                setTimeout(() => { sucEl.textContent = ''; }, 3000);
+                // 刷新更新时间
+                loadSettings();
+            } catch (err) {
+                errEl.textContent = err.message;
+            }
+        };
+
+        // ===== 每日福利 =====
+        async function loadDailyReward() {
+            const area = document.getElementById('daily-status-area');
+            area.innerHTML = '<div style="text-align:center;padding:3rem 1rem;"><div style="font-size:3rem;margin-bottom:1rem;">&#127873;</div><p style="opacity:0.5;">加载中...</p></div>';
+
+            try {
+                const data = await getDailyRewardStatus();
+
+                // 任何用户先看今日奖励（即使没绑 MC）
+                renderTodayReward(data);
+
+                if (!data.bound) {
+                    area.insertAdjacentHTML('beforeend', `
+                        <div style="text-align:center;padding:1.5rem 1rem;margin-top:0.5rem;">
+                            <p style="opacity:0.6;font-size:0.85rem;">绑定 Minecraft 账号后即可领取</p>
+                            <button class="auth-btn" onclick="document.querySelector('[data-page=mc]').click()" style="margin-top:0.5rem;font-size:0.8rem;padding:0.4rem 0.8rem;">前往绑定</button>
+                        </div>`);
+                    return;
+                }
+
+                if (data.noUuid) {
+                    area.insertAdjacentHTML('beforeend', `
+                        <div style="text-align:center;padding:1.5rem 1rem;margin-top:0.5rem;">
+                            <p style="opacity:0.6;font-size:0.85rem;">游戏数据尚未同步，请进入游戏一次</p>
+                            <button class="auth-btn secondary" onclick="loadDailyReward()" style="margin-top:0.5rem;font-size:0.8rem;padding:0.4rem 0.8rem;">刷新</button>
+                        </div>`);
+                    return;
+                }
+
+                // 已绑定：渲染连续签到状态
+                renderDailyStreak(data);
+
+                // 管理员面板（直接渲染输入框 + 加载已保存指令）
+                if (currentUser?.role === 'admin') {
+                    await loadDailyRewardAdmin();
+                }
+            } catch (err) {
+                area.innerHTML = `<div style="text-align:center;padding:3rem 1rem;color:#e74c3c;"><p>加载失败: ${escapeHtml(err.message)}</p><button class="auth-btn secondary" onclick="loadDailyReward()" style="margin-top:0.5rem;">重试</button></div>`;
+            }
+        }
+
+        // 渲染今日奖励卡片（所有用户都能看）
+        function renderTodayReward(data) {
+            const area = document.getElementById('daily-status-area');
+            const { reward, rewardCommand } = data;
+            area.innerHTML = `
+                <div class="daily-card">
+                    <div class="daily-header">
+                        <div class="daily-player">🎁 今日福利</div>
+                        <div class="daily-streak">${data.bound ? '连续签到 <strong>' + (data.streak || 0) + '</strong> 天' : '未绑定'}</div>
+                    </div>
+                    ${renderRewardBlock(reward, rewardCommand)}
+                </div>`;
+        }
+
+        // 渲染奖励物品块（含潜影盒内部物品展开）
+        function renderRewardBlock(reward, rewardCommand) {
+            if (!reward) {
+                return `<p style="opacity:0.5;font-size:0.85rem;text-align:center;margin:1rem 0;">管理员暂未配置奖励</p>`;
+            }
+            // 本地化物品名 + 容器内物品也用本地译名
+            const localizedName = getItemName(reward.itemId);
+            // 附魔显示
+            const enchHtml = (reward.enchantments && reward.enchantments.length)
+                ? `<div style="margin-top:0.3rem;display:flex;flex-wrap:wrap;gap:0.2rem;">
+                    ${reward.enchantments.map(e => {
+                        const name = getEnchantName(e.id);
+                        return `<span style="font-size:0.65rem;background:rgba(155,89,182,0.15);color:#9b59b6;padding:0.1rem 0.35rem;border-radius:3px;">✦ ${escapeHtml(name)} ${e.level}</span>`;
+                    }).join('')}
+                  </div>`
+                : '';
+            // Lore 描述
+            const loreHtml = (reward.lore && reward.lore.length)
+                ? `<div style="margin-top:0.3rem;font-size:0.7rem;opacity:0.65;line-height:1.4;font-style:italic;">${reward.lore.map(l => escapeHtml(l)).join('<br>')}</div>`
+                : '';
+            const containerHtml = (reward.isContainer && reward.containerItems && reward.containerItems.length)
+                ? `<div class="daily-container-items" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:0.4rem;width:100%;max-width:480px;margin-top:0.4rem;padding:0.5rem;background:var(--light-secondary-surface,#f1f3f5);border-radius:6px;">
+                    ${reward.containerItems.map(ci => {
+                        const ciName = getItemName(ci.id);
+                        return `
+                        <div style="display:flex;flex-direction:column;align-items:center;gap:0.2rem;padding:0.3rem;border:1px solid rgba(0,0,0,0.05);border-radius:4px;background:var(--light-surface,#fff);">
+                            <img src="${getItemIconUrl(ci.id)}" alt="${escapeHtml(ci.id)}"
+                                 onerror="this.onerror=null;this.style.display='none'"
+                                 style="width:32px;height:32px;image-rendering:pixelated;">
+                            <div style="font-size:0.65rem;text-align:center;word-break:break-all;line-height:1.1;max-width:80px;">${escapeHtml(ciName)}</div>
+                            <div style="font-size:0.7rem;font-weight:600;opacity:0.7;">×${ci.count}</div>
+                        </div>`;
+                    }).join('')}
+                </div>`
+                : '';
+            const containerCount = (reward.isContainer && reward.containerItems) ? reward.containerItems.length : 0;
+            const containerLabel = reward.isContainer
+                ? `<span class="daily-container-hint" style="font-size:0.65rem;opacity:0.7;background:rgba(52,152,219,0.1);color:#3498db;padding:0.15rem 0.4rem;border-radius:3px;margin-left:0.3rem;">📦 容器${containerCount ? ' · ' + containerCount + ' 件' : ''}</span>`
+                : '';
+            return `
+                <div class="daily-reward-info" style="display:flex;flex-direction:column;align-items:center;gap:0.5rem;margin:0.8rem 0;">
+                    <div style="display:flex;align-items:center;gap:0.75rem;">
+                        <img src="${reward.iconUrl}" alt="${escapeHtml(localizedName)}" class="daily-item-icon"
+                             onerror="this.onerror=null;this.style.display='none'"
+                             style="width:48px;height:48px;image-rendering:pixelated;border:2px solid rgba(255,255,255,0.1);border-radius:4px;">
+                        <div style="text-align:left;max-width:280px;">
+                            <div class="daily-coin" style="font-size:1rem;font-weight:600;">${escapeHtml(localizedName)} ×${reward.count}${containerLabel}</div>
+                            <div class="daily-desc" style="opacity:0.5;font-size:0.7rem;font-family:monospace;">${escapeHtml(reward.itemId)}</div>
+                            ${enchHtml}
+                            ${loreHtml}
+                        </div>
+                    </div>
+                    ${reward.isContainer ? `<details ${containerCount ? 'open' : ''} style="width:100%;max-width:480px;font-size:0.75rem;">
+                        <summary style="cursor:pointer;opacity:0.75;padding:0.3rem 0;text-align:center;list-style:none;">${containerCount ? '🔍 收起内部物品' : '📦 这是个空容器'}</summary>
+                        ${containerHtml || '<p style="text-align:center;opacity:0.5;padding:0.5rem 0;">容器内暂无物品</p>'}
+                    </details>` : ''}
+                    <details style="width:100%;max-width:400px;font-size:0.75rem;">
+                        <summary style="cursor:pointer;opacity:0.6;padding:0.3rem 0;text-align:center;">📋 查看原始指令</summary>
+                        <code style="display:block;background:var(--light-secondary-surface,#f1f3f5);padding:0.5rem;border-radius:4px;word-break:break-all;margin-top:0.3rem;">${escapeHtml(rewardCommand || '')}</code>
+                    </details>
+                </div>`;
+        }
+
+        // 渲染签到连续 + 今日状态
+        function renderDailyStreak(data) {
+            const area = document.getElementById('daily-status-area');
+            const { streak, claimedToday, gameUsername } = data;
+            const dayIcons = [];
+            const mod = streak % 7 || (claimedToday ? 7 : 0);
+            for (let i = 1; i <= 7; i++) {
+                const active = claimedToday && i === mod;
+                const past = i < mod;
+                let cls = 'dr-day';
+                if (active) cls += ' dr-active';
+                else if (past) cls += ' dr-past';
+                dayIcons.push(`<div class="${cls}">${i}</div>`);
+            }
+            const statusHtml = claimedToday
+                ? `<div class="daily-claimed"><i class="fas fa-check-circle"></i> 今日已领取<div style="font-size:0.75rem;opacity:0.5;margin-top:0.3rem;">明日再来领取</div></div>`
+                : `<div class="daily-unclaimed"><i class="fas fa-clock"></i> 今日未领取<div style="font-size:0.75rem;opacity:0.5;margin-top:0.3rem;">请在游戏内使用 <code style="background:var(--surface-secondary);padding:0.15rem 0.4rem;border-radius:3px;">/dailygift</code> 领取</div></div>`;
+            area.insertAdjacentHTML('beforeend', `
+                <div class="daily-card" style="margin-top:0.5rem;">
+                    <div class="daily-header"><div class="daily-player">🎮 ${escapeHtml(gameUsername || '')}</div></div>
+                    <div class="daily-progress">${dayIcons.join('')}</div>
+                    ${statusHtml}
+                </div>`);
+        }
+
+        // 旧的 renderDailyReward 已删除（被 renderTodayReward + renderDailyStreak 取代）
+
+        async function loadDailyRewardAdmin() {
+            const area = document.getElementById('daily-status-area');
+            if (!area) return;
+
+            // 插入管理员配置面板 HTML
+            const adminHtml = `
+                <div class="daily-card" style="margin-top:1rem;border:1px dashed var(--light-border);" id="daily-admin-panel">
+                    <h4 style="margin-bottom:0.75rem;opacity:0.7;"><i class="fas fa-cog"></i> 管理员 · 奖励指令配置</h4>
+                    <p style="font-size:0.75rem;opacity:0.5;margin-bottom:0.5rem;">
+                        玩家在游戏内执行 <code>/dailygift</code> 时，服务器会向本 Web 验证，然后执行此指令。{player} 占位符会自动替换为玩家名。
+                    </p>
+                    <div style="display:flex;gap:0.5rem;margin-bottom:0.5rem;">
+                        <input type="text" id="daily-reward-cmd-input"
+                               style="flex:1;padding:0.5rem 0.75rem;border:1px solid var(--light-border);border-radius:0.4rem;font-size:0.8rem;background:var(--light-surface);color:var(--light-text);"
+                               placeholder="give {player} minecraft:diamond 1">
+                        <button class="auth-btn" id="daily-reward-cmd-save" style="flex-shrink:0;">保存</button>
+                    </div>
+                    <div style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.4rem;">
+                        <span style="font-size:0.7rem;opacity:0.5;">快速示例：</span>
+                        <button class="mc-preset-btn" data-cmd="give {player} minecraft:diamond 1">💎 1 钻石</button>
+                        <button class="mc-preset-btn" data-cmd="give {player} minecraft:gold_ingot 5">🥇 5 金锭</button>
+                        <button class="mc-preset-btn" data-cmd="give {player} minecraft:emerald 3">💚 3 绿宝石</button>
+                        <button class="mc-preset-btn" data-cmd="give {player} minecraft:enchanted_golden_apple 1">🍎 1 附魔金苹果</button>
+                        <button class="mc-preset-btn" id="preset-daily-shulker" style="display:none;" data-cmd="">📦 每日福利潜影盒</button>
+                    </div>
+                    <div id="daily-reward-preview" style="font-size:0.75rem;opacity:0.7;padding:0.4rem 0.6rem;background:var(--light-secondary-surface);border-radius:4px;margin-bottom:0.3rem;min-height:1.2rem;"></div>
+                    <div id="daily-reward-cmd-msg" style="font-size:0.75rem;"></div>
+                </div>`;
+            // 避免重复插入
+            if (!document.getElementById('daily-admin-panel')) {
+                area.insertAdjacentHTML('beforeend', adminHtml);
+            }
+
+            const input = document.getElementById('daily-reward-cmd-input');
+            const preview = document.getElementById('daily-reward-preview');
+            const msg = document.getElementById('daily-reward-cmd-msg');
+
+            const updatePreview = () => {
+                if (!input || !preview) return;
+                const cmd = input.value.trim();
+                if (!cmd) { preview.textContent = ''; return; }
+                const sample = cmd.replace(/\{player\}/g, 'Steve');
+                preview.innerHTML = '<i class="fas fa-terminal"></i> 预览：<code>' + escapeHtml(sample) + '</code>';
+            };
+            if (input) input.addEventListener('input', updatePreview);
+
+            // 加载已保存的指令
+            try {
+                const cur = await getDailyRewardAdmin();
+                if (cur && cur.command && input) input.value = cur.command;
+                updatePreview();
+            } catch (e) { /* ignore */ }
+
+            // 快捷示例按钮
+            // 完整潜影盒指令（用 JS 动态设置，避免 HTML 属性转义）
+            const shulkerBtn = document.getElementById('preset-daily-shulker');
+            if (shulkerBtn) {
+                shulkerBtn.dataset.cmd = `give {player} orange_shulker_box[custom_name=[{"text":"G","color":"gold"},{"text":"C","color":"aqua"},{"text":"M","color":"light_purple"},{"text":"C","color":"dark_aqua"},{"text":" - ","color":"gray"},{"text":"每日福利","color":"dark_green","italic":true}],lore=[{"text":"这是GCMC服务器的每日福利","color":"dark_purple"},{"text":"每日使用/dailygift即可领取！","color":"aqua"},{"text":"-------------------------------"},{"text":"可能会刷新一些好东西o！","color":"light_purple"}],attribute_modifiers=[{type:"max_health",amount:2.0,operation:"add_multiplied_base",slot:"any",id:"gcmc:daily_gift_hp"}],container=[{slot:0,item:{id:"firework_rocket",count:64,components:{"minecraft:fireworks":{flight_duration:1}}}},{slot:1,item:{id:"firework_rocket",count:64,components:{"minecraft:fireworks":{flight_duration:1}}}},{slot:2,item:{id:"firework_rocket",count:64,components:{"minecraft:fireworks":{flight_duration:1}}}},{slot:3,item:{id:"firework_rocket",count:64,components:{"minecraft:fireworks":{flight_duration:1}}}},{slot:4,item:{id:"bread",count:16}},{slot:5,item:{id:"firework_rocket",count:64,components:{"minecraft:fireworks":{flight_duration:1}}}},{slot:6,item:{id:"firework_rocket",count:64,components:{"minecraft:fireworks":{flight_duration:1}}}},{slot:7,item:{id:"firework_rocket",count:64,components:{"minecraft:fireworks":{flight_duration:1}}}},{slot:8,item:{id:"firework_rocket",count:64,components:{"minecraft:fireworks":{flight_duration:1}}}},{slot:9,item:{id:"diamond",count:5}},{slot:10,item:{id:"golden_apple",count:8}},{slot:11,item:{id:"golden_apple",count:8}},{slot:12,item:{id:"bread",count:16}},{slot:13,item:{id:"bread",count:16}},{slot:14,item:{id:"bread",count:16}},{slot:15,item:{id:"golden_apple",count:8}},{slot:16,item:{id:"golden_apple",count:8}},{slot:17,item:{id:"diamond",count:5}},{slot:20,item:{id:"enchanted_golden_apple",count:1}},{slot:21,item:{id:"bread",count:16}},{slot:22,item:{id:"bread",count:16}},{slot:23,item:{id:"bread",count:16}},{slot:24,item:{id:"enchanted_golden_apple",count:1}}],minecraft:tooltip_display={hidden_components:["minecraft:container"]}] 1`;
+                shulkerBtn.style.display = '';
+            }
+            area.querySelectorAll('.mc-preset-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (input) {
+                        input.value = btn.dataset.cmd;
+                        updatePreview();
+                        input.focus();
+                    }
+                });
+            });
+
+            // 保存
+            const saveBtn = document.getElementById('daily-reward-cmd-save');
+            if (saveBtn) {
+                saveBtn.addEventListener('click', async () => {
+                    if (!input || !msg) return;
+                    const cmd = input.value.trim();
+                    if (!cmd) { msg.innerHTML = '<span style="color:#e74c3c;">请输入指令</span>'; return; }
+                    if (!cmd.includes('{player}')) { msg.innerHTML = '<span style="color:#e74c3c;">指令必须包含 {player} 占位符</span>'; return; }
+
+                    try {
+                        const result = await updateDailyRewardCommand(cmd);
+                        msg.innerHTML = '<span style="color:#2ecc71;"><i class="fas fa-check-circle"></i> ' + (result.message || '已保存') + '，下次 /dailygift 生效</span>';
+                        if (typeof showToast === 'function') showToast('指令已保存');
+                    } catch (err) {
+                        msg.innerHTML = `<span style="color:#e74c3c;">${err.message}</span>`;
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>

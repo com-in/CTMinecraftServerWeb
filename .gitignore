@@ -1,0 +1,18 @@
+node_modules/
+data/ctmc.db
+uploads/avatars/*
+!uploads/avatars/.gitkeep
+
+# 插件相关（部署 MC 时单独处理）
+plugins/CTMCVerify/build/
+plugins/CTMCVerify/staging/
+plugins/CTMCVerify/stubs/
+
+# 系统文件
+Thumbs.db
+.DS_Store
+*.log
+
+# IDE
+.vscode/
+.idea/
